@@ -12,14 +12,16 @@ public class Animal : LivingEntity
 
     private Animator AnimalAnimator;
 
-    public GameObject itemPrefab;
+    public GameObject itemPrefab; // serialize -> 에디터 열리면 다시 확인
 
     public System.Action onDie;
 
-    private float speed = 1f;
+    private const float findColliderRange = 5f;
+    private float speed = 1f; // 에디터 열리면 확인
 
     private AudioSource pigAudio;
     public AudioClip dieSound;
+
 
     public bool hasTarget
     {
@@ -46,7 +48,7 @@ public class Animal : LivingEntity
     {
         pigAudio = GetComponent<AudioSource>();
         navMeshAgent.speed = speed;
-        health = 20f;
+        health = startAnimalHealth;
         StartCoroutine(UpdatePath());
     }
 
@@ -59,19 +61,6 @@ public class Animal : LivingEntity
         }
 
         this.onDeath += () => Destroy(this);
-        //if(!dead)
-        //{
-        //    Vector3 v = pos;
-        //
-        //    v.x += delta * Mathf.Sin(Time.time * speed);
-        //
-        //    // 좌우 이동의 최대치 및 반전 처리를 이렇게 한줄에 멋있게 하네요.
-        //
-        //    transform.position = v;
-        //    AnimalAnimator.SetFloat("Move", 0.5f);
-        //}
-        //else
-        //    AnimalAnimator.SetFloat("Move", 0f);
 
     }
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
@@ -85,7 +74,7 @@ public class Animal : LivingEntity
         base.Die();
         pigAudio.PlayOneShot(dieSound);
 
-        AnimalAnimator.SetFloat("Move", 0f);
+        AnimalAnimator.SetFloat("Move", naveMeshStopSpeed);
         DropItem();
         Collider[] colliders = GetComponents<Collider>();
     
@@ -107,16 +96,15 @@ public class Animal : LivingEntity
         {
             if(hasTarget)
             {
-                //float movePower = move[Random.Range(0, move.Length)];
-                AnimalAnimator.SetFloat("Move", 0.5f/*Random.Range(3, movePower)*/);
+                AnimalAnimator.SetFloat("Move", naveMeshSlowSpeed);
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
             }
             else
             {
-                Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, whatIsTarget);
+                Collider[] colliders = Physics.OverlapSphere(transform.position, findColliderRange, whatIsTarget);
                 navMeshAgent.isStopped = true;
-                AnimalAnimator.SetFloat("Move", 0f);
+                AnimalAnimator.SetFloat("Move", naveMeshStopSpeed);
 
                 for (int i = 0; i < colliders.Length; i++)
                 {
@@ -129,7 +117,7 @@ public class Animal : LivingEntity
                 }
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(waitForSecond);
         }
 
     }
@@ -143,7 +131,6 @@ public class Animal : LivingEntity
         this.onDie = () =>
         {
             go.SetActive(true);
-            //go.GetComponent<FiledItems>().GetItem();
             go.GetComponent<FiledItems>().SetItem(go.GetComponent<FiledItems>().GetItem());
         };
 

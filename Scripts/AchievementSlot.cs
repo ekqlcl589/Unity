@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class AchievementSlot : MonoBehaviour
 {
-    public int slotnum;
-    public Text achivementText; // 얘는 슬롯 마다 다르게 적혀야 하는 애인데 
+    public int slotnum; // serialize 해야 하는 변수인지 확인 하고 수정
+    public Text achivementText;  
     public AchievementsManager.Achievements ach;
     public void UpdateSlotUI()
     {

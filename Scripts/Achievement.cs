@@ -16,6 +16,8 @@ public class Achievement : MonoBehaviour
     public delegate void OnChangeAch();
     public OnChangeAch onChangeAch;
 
+    private const int achievementSlotNum = 8;
+
     public List<AchievementsManager.Achievements> Achievements
     {
         get => achievements;
@@ -49,7 +51,7 @@ public class Achievement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        achievementSlot = 8;
+        achievementSlot = achievementSlotNum;
     }
 
     // Update is called once per frame

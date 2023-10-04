@@ -4,28 +4,36 @@ using UnityEngine;
 // 생명체로서 동작할 게임 오브젝트들을 위한 뼈대를 제공
 // 체력, 데미지 받아들이기, 사망 기능, 사망 이벤트를 제공
 public class LivingEntity : MonoBehaviour, IDamageable {
-    public float maxHealth = 100f;
-    public float startingHealth = 100f; // 시작 체력
+    protected const float maxHealth = 100f;
+    protected const float startingHealth = 100f; // 시작 체력
+    protected const float startAnimalHealth = 20f;
     public float health { get; protected set; } // 현재 체력
 
-    public float maxHunger = 100f;
-    public float startingHunger = 100f;
+    protected const float maxHunger = 100f;
+    protected const float startingHunger = 100f;
+    private int DieHealth = 0;
 
-    public float hungryDecreasePoint = 5;
-    public float hungryDecreaseTime;
-    public float currentHungryDecreaseTime;
+    protected const float hungryDecreasePoint = 5;
+    protected float hungryDecreaseTime;
+    protected float currentHungryDecreaseTime;
 
     public float Hunger { get; protected set; }
 
-    public float maxTemperature = 100f;
-    public float startingTemperature = 100f;
+    protected const float maxTemperature = 100f;
+    protected const float startingTemperature = 100f;
 
-    public float temperatureDecreasePoint = 5;
-    public float temperatureDecreaseTime;
-    public float currentTemperatureDecreaseTime;
+    protected const float temperatureDecreasePoint = 5;
+    protected float temperatureDecreaseTime;
+    protected float currentTemperatureDecreaseTime;
     public float Temperature { get; protected set; }
 
+    protected const float naveMeshDefaultSpeed = 1f;
+    protected const float naveMeshStopSpeed = 0f;
+    protected const float naveMeshSlowSpeed = 0.5f;
 
+    private const defaultAnimalNavMeshRange = 10f;
+
+    protected const float waitForSecond = 0.5f;
     public bool dead { get; protected set; } // 사망 상태
 
     public event Action onDeath; // 사망시 발동할 이벤트
@@ -46,7 +54,7 @@ public class LivingEntity : MonoBehaviour, IDamageable {
         health -= damage;
 
         // 체력이 0 이하 && 아직 죽지 않았다면 사망 처리 실행
-        if (health <= 0 && !dead)
+        if (health <= DieHealth && !dead)
         {
             GameManager.instance.AddZombieCount(1);
 
@@ -62,7 +70,7 @@ public class LivingEntity : MonoBehaviour, IDamageable {
             return;
         }
 
-        if (health >= 100)
+        if (health >= maxHealth)
             return;
         else
              health += newHealth;
@@ -74,7 +82,7 @@ public class LivingEntity : MonoBehaviour, IDamageable {
         if (dead)
             return;
 
-        if (Hunger >= 100)
+        if (Hunger >= maxHunger)
             return;
         else
             Hunger += newHunger;
@@ -85,7 +93,7 @@ public class LivingEntity : MonoBehaviour, IDamageable {
         if (dead)
             return;
 
-        if (Hunger <= 0)
+        if (Hunger <= DieHealth)
             return;
         else
             Hunger -= newHunger;
@@ -96,7 +104,7 @@ public class LivingEntity : MonoBehaviour, IDamageable {
         if (dead)
             return;
 
-        if (Hunger >= 100)
+        if (Hunger >= maxHunger)
             return;
         else
             Temperature += newTemper;
@@ -107,7 +115,7 @@ public class LivingEntity : MonoBehaviour, IDamageable {
         if (dead)
             return;
 
-        if (Hunger <= 0)
+        if (Hunger <= DieHealth)
             return;
         Temperature -= newTemper;
 

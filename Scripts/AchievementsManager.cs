@@ -7,6 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class AchievementsManager : MonoBehaviour
 {
+    private const int killCount = 3;
+    private const int achievement_hideTextTime = 5;
+    private const achievement_1Count = 1;
+    private const achievement_3Count = 3;
+    private const achievement_5Count = 5;
+    private const achievement_7Count = 7;
+    private const achievement_10Count = 10;
+
     Text _achievementText;
     public Text achievementText
     {
@@ -145,7 +153,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.food1])
             return;
 
-        if (food >= 1)
+        if (food >= defaultAchievementCount)
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 최초의 식량 \n"));
             _dicAchievementUnlock[Achievements.food1] = true;
@@ -158,7 +166,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.cook1])
             return;
 
-        if (cook >= 1)
+        if (cook >= defaultAchievementCount)
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 요리사 등장 \n"));
             _dicAchievementUnlock[Achievements.cook1] = true;
@@ -211,7 +219,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.specialFood])
             return;
 
-        if (food >= 1)
+        if (food >= defaultAchievementCount)
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 완벽한 음식..? \n"));
             _dicAchievementUnlock[Achievements.specialFood] = true;
@@ -225,7 +233,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.sunKill])
             return;
 
-        if (kill >= 1)
+        if (kill >= defaultAchievementCount)
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 돋보기 실험 \n"));
             _dicAchievementUnlock[Achievements.sunKill] = true;
@@ -238,7 +246,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.safeHouse])
             return;
 
-        if (safe >= 1)
+        if (safe >= defaultAchievementCount)
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 은신처 도착\n"));
             _dicAchievementUnlock[Achievements.safeHouse] = true;
@@ -249,7 +257,7 @@ public class AchievementsManager : MonoBehaviour
     IEnumerator Cor_ShowText5Sec(string text)
     {
         achievementText.text += text;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(textTime);
         achievementText.text = string.Empty;
     }
 }

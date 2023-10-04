@@ -21,6 +21,8 @@ public class AnimalChicken : LivingEntity
 
     private float speed = 1f;
 
+    private const chickenNavMeshRange = 10f;
+
     public bool hasTarget
     {
         get
@@ -46,7 +48,7 @@ public class AnimalChicken : LivingEntity
     {
         chickenAudio = GetComponent<AudioSource>();
         navMeshAgent.speed = speed;
-        health = 20f;
+        health = startAnimalHealth;
         StartCoroutine(UpdatePath());
     }
 
@@ -57,28 +59,12 @@ public class AnimalChicken : LivingEntity
         {
             return;
         }
-
-        //if(!dead)
-        //{
-        //    Vector3 v = pos;
-        //
-        //    v.x += delta * Mathf.Sin(Time.time * speed);
-        //
-        //    // 좌우 이동의 최대치 및 반전 처리를 이렇게 한줄에 멋있게 하네요.
-        //
-        //    transform.position = v;
-        //    AnimalAnimator.SetFloat("Move", 0.5f);
-        //}
-        //else
-        //    AnimalAnimator.SetFloat("Move", 0f);
-
     }
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
         base.OnDamage(damage, hitPoint, hitNormal);
-        //    Debug.Log("sdfsd");
     }
-    //
+
     public override void Die()
     {
         base.Die();
@@ -106,16 +92,15 @@ public class AnimalChicken : LivingEntity
         {
             if (hasTarget)
             {
-                //float movePower = move[Random.Range(0, move.Length)];
-                AnimalAnimator.SetFloat("Move", 0.5f/*Random.Range(3, movePower)*/);
+                AnimalAnimator.SetFloat("Move", naveMeshSlowSpeed);
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
             }
             else
             { // 타겟이 없으면 Move 값 0 == Idle 상태로 대기 
-                Collider[] colliders = Physics.OverlapSphere(transform.position, 10f, whatIsTarget);
+                Collider[] colliders = Physics.OverlapSphere(transform.position, chickenNavMeshRange, whatIsTarget);
                 navMeshAgent.isStopped = true;
-                AnimalAnimator.SetFloat("Move", 0f);
+                AnimalAnimator.SetFloat("Move", naveMeshStopSpeed);
 
                 for (int i = 0; i < colliders.Length; i++)
                 {
@@ -128,7 +113,7 @@ public class AnimalChicken : LivingEntity
                 }
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(waitForSecond);
         }
 
     }
@@ -141,7 +126,7 @@ public class AnimalChicken : LivingEntity
         this.onDie = () =>
         {
             go.SetActive(true);
-            //go.GetComponent<FiledItems>().GetItem();
+            
             go.GetComponent<FiledItems>().SetItem(go.GetComponent<FiledItems>().GetItem());
         };
 
@@ -151,7 +136,7 @@ public class AnimalChicken : LivingEntity
     {
         if(collision.gameObject.tag == "Grass")
         {
-            AnimalAnimator.SetFloat("Move", 0f);
+            AnimalAnimator.SetFloat("Move", naveMeshStopSpeed);
             AnimalAnimator.SetTrigger("Eat");
         }
     }

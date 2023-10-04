@@ -48,10 +48,6 @@ public class AchievementUI : MonoBehaviour
 
     void RedrawSlotUI()
     {
-        //for(int i = 0; i < slots.Length; i++) // 애는 슬롯을 삭제할 일이 없어서 안 해도 됨?
-        //{
-        //    slots[i].RemoveSlot();
-        //}
         for(int i = 0; i < achievement.achievements.Count; i++)
         {
             slots[i].ach = achievement.achievements[i];

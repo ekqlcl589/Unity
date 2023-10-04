@@ -64,21 +64,6 @@ public class AniamlBear : LivingEntity
         {
             return;
         }
-
-        //if(!dead)
-        //{
-        //    Vector3 v = pos;
-        //
-        //    v.x += delta * Mathf.Sin(Time.time * speed);
-        //
-        //    // 좌우 이동의 최대치 및 반전 처리를 이렇게 한줄에 멋있게 하네요.
-        //
-        //    transform.position = v;
-        //    AnimalAnimator.SetFloat("Move", 0.5f);
-        //}
-        //else
-        //    AnimalAnimator.SetFloat("Move", 0f);
-
     }
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
@@ -97,8 +82,6 @@ public class AniamlBear : LivingEntity
         for (int i = 0; i < colliders.Length; i++)
             colliders[i].enabled = false;
 
-        //AnimalAnimator.SetBool("Dead", true);
-
         navMeshAgent.isStopped = true;
         navMeshAgent.enabled = false;
 
@@ -113,8 +96,7 @@ public class AniamlBear : LivingEntity
         {
             if (hasTarget)
             {
-                //float movePower = move[Random.Range(0, move.Length)];
-                AnimalAnimator.SetFloat("Move", 0.5f/*Random.Range(3, movePower)*/);
+                AnimalAnimator.SetFloat("Move", 0.5f);
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
 
@@ -128,7 +110,7 @@ public class AniamlBear : LivingEntity
             }
             else
             {
-                Collider[] colliders = Physics.OverlapSphere(transform.position, 10f, whatIsTarget);
+                Collider[] colliders = Physics.OverlapSphere(transform.position, defaultAnimalNavMeshRange, whatIsTarget);
                 navMeshAgent.isStopped = true;
                 AnimalAnimator.SetFloat("Move", 0f);
 
@@ -143,7 +125,7 @@ public class AniamlBear : LivingEntity
                 }
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(waitForSecond);
         }
 
     }
@@ -156,7 +138,7 @@ public class AniamlBear : LivingEntity
         this.onDie = () =>
         {
             go.SetActive(true);
-            //go.GetComponent<FiledItems>().GetItem();
+            
             go.GetComponent<FiledItems>().SetItem(go.GetComponent<FiledItems>().GetItem());
         };
 
