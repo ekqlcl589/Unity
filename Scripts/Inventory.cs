@@ -1,15 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class Inventory : MonoBehaviour
 {
-    public static Inventory instance;
+    private static Inventory m_instance;
+
+    public static Inventory Instance
+    {
+        get
+        {
+            if (m_instance == null)
+            {
+                m_instance = FindObjectOfType<Inventory>();
+            }
+            return m_instance;
+        }
+    }
+
+    [SerializeField] private AudioClip pickUpClip;
 
     private int foodCnt = 0;
-
-    public AudioClip pickUpClip;
     private AudioSource playerAudioPlayer;
+
+    private const int inventorySlotNum = 16;
+    private const int specialFoodCount = 1;
 
     public delegate void OnSlotCountChange(int value);
     public OnSlotCountChange onSlotCountChange;
@@ -42,15 +58,13 @@ public class Inventory : MonoBehaviour
             onSlotCountChange.Invoke(slotCnt);
         }
     }
-
     private void Awake()
     {
-        if (instance != null)
+        if (Instance != this)
         {
             Destroy(gameObject);
-            return;
         }
-        instance = this;
+        m_instance = this;
 
         playerAudioPlayer = GetComponent<AudioSource>();
 
@@ -59,22 +73,16 @@ public class Inventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        slotCnt = 16; // 그냥 16개 다 활성화 시키고 + 버튼 누르면 꺼지는 거로 하자 뭔 추가냐 ㅋㅋ
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        slotCnt = inventorySlotNum;
     }
 
     public bool AddItem(Item _item)
     {
-        if(items.Count < SlotCnt)
+        if (items.Count < SlotCnt)
         {
             items.Add(_item);
-            if(onChangeItem != null)
-            onChangeItem.Invoke();
+            if (onChangeItem != null)
+                onChangeItem.Invoke();
             return true;
         }
         return false;
@@ -89,18 +97,18 @@ public class Inventory : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("FieldItem"))
+        if (other.CompareTag("FieldItem"))
         {
             playerAudioPlayer.PlayOneShot(pickUpClip);
             FiledItems filedItems = other.GetComponent<FiledItems>();
 
-            if(filedItems.GetItem().itemName != "Coin" && filedItems.GetItem().itemName != "치즈케이크")
+            if (filedItems.GetItem().GetItemName() != "Coin" && filedItems.GetItem().GetItemName() != "치즈케이크")
                 AddFoodCount();
 
-            if(filedItems.GetItem().itemName == "치즈케이크")
+            if (filedItems.GetItem().GetItemName() == "치즈케이크")
             {
                 AchievementsManager.Instance.OnNotify(AchievementsManager.Achievements.specialFood,
-                    special: 1);
+                    special: specialFoodCount);
             }
 
             if (AddItem(filedItems.GetItem()))

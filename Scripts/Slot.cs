@@ -6,18 +6,22 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour, IPointerUpHandler
 {
-    public int slotnum;
-    public Item item;
-    public Image itemIcon;
-    public GameObject player;
+    public Item GetItem() { return item; }
+    public void SetItemData(Item newitem) { item = newitem; }
+    [SerializeField] private Item item;
+
+    public void SetSlotNum(int _slotNum) { slotnum = _slotNum; }
+    [SerializeField] private int slotnum;
+    [SerializeField] private Image itemIcon;
+    [SerializeField] private GameObject player;
 
     public void Start()
     {
     }
     public void UpdateSlotUI()
     {
-        
-        itemIcon.sprite = item.itemImage;
+
+        itemIcon.sprite = item.GetItemSpriteImage();
         itemIcon.gameObject.SetActive(true);
     }
 
@@ -34,7 +38,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler
 
         if (isUse)
         {
-            Inventory.instance.ReMoveItem(slotnum); // 아이템 갯수를 줄이는거로 변경 
+            Inventory.Instance.ReMoveItem(slotnum); // 아이템 갯수를 줄이는거로 변경 
         }
     }
 }

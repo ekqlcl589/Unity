@@ -6,13 +6,15 @@ using UnityEngine.UI;
 
 public class CookingSlot : MonoBehaviour, IPointerUpHandler
 {
-    
-    public int slotNum;
-    
-    public Slider slider;
 
-    public float maxdata = 100f;
-    public float startingdata = 0f; // 시작 요리 게이지
+    [SerializeField] private int slotNum;
+
+    [SerializeField] private Slider slider;
+
+    [SerializeField] private float maxdata = 100f;
+    [SerializeField] private float startingdata = 0f; // 시작 요리 게이지
+
+    private const float delayTime = 0.05f;
     public float cook { get; protected set; } // 현재 요리 게이지
 
     private bool isCooking = false; // 밖에서 조절?
@@ -23,19 +25,19 @@ public class CookingSlot : MonoBehaviour, IPointerUpHandler
         get => isCookOk;
         set
         {
-            isCookOk = value; // 사실상 밖에서는 건드릴일 없음, 없어야 해서 set이면 그냥 프라이빗 해야 함
+            isCookOk = value;
         }
     }
 
     void Start()
     {
-        //Inventory.instance = instance;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isCooking)
+        if (isCooking)
             Cooking();
 
     }
@@ -52,20 +54,16 @@ public class CookingSlot : MonoBehaviour, IPointerUpHandler
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        switch(slotNum)
+        switch (slotNum)
         {
             case 0:
                 {
                     if (CheckItem())
                     {
                         slider.gameObject.SetActive(true);
-                        Debug.Log("오호..");
                         isCooking = true;
                     }
-                    else
-                        Debug.Log("zz..");
-
-                     break;
+                    break;
                 }
 
             case 1:
@@ -73,7 +71,6 @@ public class CookingSlot : MonoBehaviour, IPointerUpHandler
                     if (CheckItem())
                     {
                         slider.gameObject.SetActive(true);
-                        Debug.Log("오호..");
                         isCooking = true;
                     }
                     break;
@@ -83,12 +80,8 @@ public class CookingSlot : MonoBehaviour, IPointerUpHandler
                     if (CheckItem())
                     {
                         slider.gameObject.SetActive(true);
-                        Debug.Log("오호..");
                         isCooking = true;
                     }
-                    else
-                        Debug.Log("zz..");
-
                     break;
                 }
 
@@ -97,57 +90,39 @@ public class CookingSlot : MonoBehaviour, IPointerUpHandler
                     if (CheckItem())
                     {
                         slider.gameObject.SetActive(true);
-                        Debug.Log("오호..");
                         isCooking = true;
                     }
-                    else
-                        Debug.Log("zz..");
 
+                    break;
                 }
-                break;
 
         }
-        //if (slotNum == 3)
-        //{
-        //    if(CheckItem())
-        //    {
-        //        slider.gameObject.SetActive(true);
-        //        Debug.Log("오호..");
-        //        isCooking = true;
-        //    }
-        //    else
-        //        Debug.Log("zz..");
-        //}
-        //else
-        //    Debug.Log("흠.."); // 아이템을 드래그 해서 사용? 아니면 이미지로 만들기는 좀 많이 애매하네...
-
     }
 
     public bool CheckItem()
     {
-        if(Inventory.instance.Items.Count >= 1) // 특정 아이템의 정보를... 어떻게 가져온담....
+        if (Inventory.Instance.Items.Count >= 1) // 특정 아이템의 정보를... 
         {
             //인벤토리의 아이템을 가져오는 게 아니라 슬롯의 아이템을 가져와서 비교를 한다?
             //Inventory.instance.Items.FindIndex(slotNum => slotNum.Equals(0));
             return true;
         }
-        
+
         return false;
     }
 
     public void Cooking()
     {
-        cook += Time.time * 0.05f;
+        cook += Time.time * delayTime;
         slider.value = cook;
 
-        if(cook >= maxdata)
+        if (cook >= maxdata)
         {
             cook = 0f;
             slider.value = cook;
 
             Debug.Log("요리 성공");
 
-            
             slider.gameObject.SetActive(false);
 
             isCookOk = true;
