@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class SafeHouse : MonoBehaviour
 {
+    private const int safePoint = 1;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             AchievementsManager.Instance.OnNotify(AchievementsManager.Achievements.safeHouse,
-                safeHouse: 1);
+                safeHouse: safePoint);
 
-            GameManager.instance.SafeHouse = true;
+            GameManager.instance.SetSafeHouse(true);
 
             UIManager.instance.dayText.text = "생존 성공";
         }

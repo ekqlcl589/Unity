@@ -5,19 +5,26 @@ using UnityEngine.UI;
 
 public class SpriteText : MonoBehaviour
 {
-    private float time;
+    [SerializeField] private float time;
+
+    private const float num1 = 1f;
+
+    private const float _time = 1f;
+    private const float _halfTime = 0.5f;
+    private const float _zeroTime = 0f;
+
     // Update is called once per frame
     void Update()
     {
-        if(time < 0.5f)
+        if (time < _halfTime)
         {
-            GetComponent<Text>().color = new Color(1, 1, 1, 1 - time);
+            GetComponent<Text>().color = new Color(num1, num1, num1, num1 - time);
         }
         else
         {
-            GetComponent<Text>().color = new Color(1, 1, 1, time);
-            if (time > 1f)
-                time = 0f;
+            GetComponent<Text>().color = new Color(num1, num1, num1, time);
+            if (time > _time)
+                time = _zeroTime;
         }
 
         time += Time.deltaTime;

@@ -1,16 +1,12 @@
 using UnityEngine;
 
 // 게임 점수를 증가시키는 아이템
-public class Coin : MonoBehaviour, IItem {
-    public int ammo = 30; // 충전할 총알 수
+public class Coin : MonoBehaviour, IItem
+{
+    private const int ammo = 30; // 충전할 총알 수
 
-    public void Use(GameObject target) {
-        //PlayerShooter playerShooter = target.GetComponent<PlayerShooter>();
-        //
-        //if (playerShooter != null && playerShooter.gun != null)
-        //    playerShooter.gun.ammoRemain += ammo;
-        //
-        //Destroy(gameObject);
+    public void Use(GameObject target)
+    {
     }
 
     public void Auto(GameObject target)
@@ -21,8 +17,8 @@ public class Coin : MonoBehaviour, IItem {
     {
         PlayerShooter playerShooter = target.GetComponent<PlayerShooter>();
 
-        if (playerShooter != null && playerShooter.gun != null)
-            playerShooter.gun.ammoRemain += ammo;
+        if (playerShooter != null && playerShooter.GetGunData() != null)
+            playerShooter.GetGunData().ammoRemain += ammo;
         return true;
     }
 

@@ -3,14 +3,18 @@ using UnityEngine.SceneManagement;
 
 // 플레이어 캐릭터를 조작하기 위한 사용자 입력을 감지
 // 감지된 입력값을 다른 컴포넌트들이 사용할 수 있도록 제공
-public class PlayerInput : MonoBehaviour {
-    public string moveAxisName = "Vertical"; // 앞뒤 움직임을 위한 입력축 이름
-    public string rotateAxisName = "Horizontal"; // 좌우 회전을 위한 입력축 이름
-    public string fireButtonName = "Fire1"; // 발사를 위한 입력 버튼 이름
-    public string reloadButtonName = "Reload"; // 재장전을 위한 입력 버튼 이름
-    public string jumpButtonName = "Jump";
-    public string useButtonName = "Use";
+public class PlayerInput : MonoBehaviour
+{
+    private string moveAxisName = "Vertical"; // 앞뒤 움직임을 위한 입력축 이름
+    private string rotateAxisName = "Horizontal"; // 좌우 회전을 위한 입력축 이름
+    private string fireButtonName = "Fire1"; // 발사를 위한 입력 버튼 이름
+    private string reloadButtonName = "Reload"; // 재장전을 위한 입력 버튼 이름
+    private string jumpButtonName = "Jump";
+    private string useButtonName = "Use";
 
+    private const int initPoint = 0;
+
+    private Vector3 safeHouseStartPoint = new Vector3(0f, 4f, 0f);
     // 값 할당은 내부에서만 가능
     public float move { get; private set; } // 감지된 움직임 입력값
     public float rotate { get; private set; } // 감지된 회전 입력값
@@ -26,16 +30,23 @@ public class PlayerInput : MonoBehaviour {
     {
 
     }
-    private void Update() {
+    private void Update()
+    {
         // 게임오버 상태에서는 사용자 입력을 감지하지 않는다
         if (GameManager.instance != null && GameManager.instance.isGameover)
         {
-            move = 0;
-            rotate = 0;
+            move = initPoint;
+
+            rotate = initPoint;
+
             fire = false;
+            
             reload = false;
+            
             jump = false;
+            
             Use = false;
+            
             return;
         }
 
@@ -52,9 +63,9 @@ public class PlayerInput : MonoBehaviour {
 
         Use = Input.GetButtonDown(useButtonName);
 
-        if (SceneManager.GetActiveScene().buildIndex == 2 && !GameManager.instance.SafeHouse)
+        if (SceneManager.GetActiveScene().buildIndex == 2 && !GameManager.instance.GetSafeHouse())
         {
-            gameObject.transform.position = new Vector3(0f, 4f, 0f);
+            gameObject.transform.position = safeHouseStartPoint;
         }
 
     }
