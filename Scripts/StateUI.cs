@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StateUI : MonoBehaviour
 {
-    public GameObject stateUI;
-    bool active = false;
+    [SerializeField] private GameObject stateUI;
+    private bool active = false;
     // Start is called before the first frame update
     void Start()
     {

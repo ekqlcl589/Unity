@@ -5,36 +5,45 @@ using UnityEngine.AI;
 
 public class Zombie_Boss : LivingEntity
 {
-    public LayerMask whatIsTarget; // 추적 대상 레이어
+    [SerializeField] private LayerMask whatIsTarget; // 추적 대상 레이어
+
+    [SerializeField] private GameObject itemPrefab;
+
+    [SerializeField] private ParticleSystem hitEffect; // 피격 시 재생할 파티클 효과
+
+    [SerializeField] private AudioClip deathSound; // 사망 시 재생할 소리
+    [SerializeField] private AudioClip hitSound; // 피격 시 재생할 소리
+    [SerializeField] private AudioClip angrySound; // 체력이 일정 수치 이하로 내려갈 시 재생할 사운드 
 
     private LivingEntity targetEntity; // 추적 대상
     private NavMeshAgent navMeshAgent; // 경로 계산 AI 에이전트
 
     private Animator zombieAnimator;
 
-    public GameObject itemPrefab;
-
-    public System.Action onDie;
-
-    public ParticleSystem hitEffect; // 피격 시 재생할 파티클 효과
-
-    public AudioClip deathSound; // 사망 시 재생할 소리
-    public AudioClip hitSound; // 피격 시 재생할 소리
-    public AudioClip angrySound; // 체력이 일정 수치 이하로 내려갈 시 재생할 사운드 
     private AudioSource zombieAudioPlayer;
 
-    public float damage = 30f;
-    public float timeBetAttack = 1f;
+    private const float damage = 30f;
+    private const float timeBetAttack = 1f;
     private float lastAttackTime;
 
+    private const float bossHalfHealth = 500f;
+
+    private const float bossphase2Speed = 4.5f;
+
+    private const float bossColligionRange = 10f;
+
+    private const float paradeWaitTime = 5f;
+
     private bool angry = false;
+
+    public System.Action onDie;
 
     private bool hasTarget
     {
         get
         {
             // 추적할 대상이 존재하고, 대상이 사망하지 않았다면 true
-            if (targetEntity != null && !targetEntity.dead)
+            if (targetEntity != null && !targetEntity.Dead)
             {
                 return true;
             }
@@ -56,7 +65,6 @@ public class Zombie_Boss : LivingEntity
     void Start()
     {
         StartCoroutine(UpdatePath());
-        //StartCoroutine(cor_ShowZombieParade());
 
     }
 
@@ -72,22 +80,22 @@ public class Zombie_Boss : LivingEntity
 
     private IEnumerator UpdatePath()
     {
-        while(!dead)
+        while (!Dead)
         {
             if (hasTarget)
             {
                 // 추격 대상이 존재하면 경로를 갱신하고 ai 이동을 계속 진행
-                zombieAnimator.SetFloat("Move", 0.5f);
+                zombieAnimator.SetFloat("Move", naveMeshSlowSpeed);
 
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
 
-                if(health <= 500)
+                if (health <= bossHalfHealth)
                 {
-                    zombieAnimator.SetFloat("Move", 1f);
-                    navMeshAgent.speed = 4.5f;
+                    zombieAnimator.SetFloat("Move", naveMeshDefaultSpeed);
+                    navMeshAgent.speed = bossphase2Speed;
 
-                    if(!angry)
+                    if (!angry)
                     {
                         zombieAudioPlayer.PlayOneShot(angrySound);
                         angry = true;
@@ -98,16 +106,16 @@ public class Zombie_Boss : LivingEntity
             else
             {
                 navMeshAgent.isStopped = true;
-                zombieAnimator.SetFloat("Move", 0f);
+                zombieAnimator.SetFloat("Move", naveMeshStopSpeed);
 
-                Collider[] colliders = Physics.OverlapSphere(transform.position, 10f, whatIsTarget);
+                Collider[] colliders = Physics.OverlapSphere(transform.position, bossColligionRange, whatIsTarget);
                 // 모든 콜라이더를 순회하면서 살아 있는 LiveingEntiry 찾기
                 for (int i = 0; i < colliders.Length; i++)
                 {
                     LivingEntity live = colliders[i].GetComponent<LivingEntity>();
 
                     // 컴포넌트가 존재하고 해당 컴포넌트가 살아 있다면
-                    if (live != null && !live.dead)
+                    if (live != null && !live.Dead)
                     {
                         targetEntity = live;
                         break;
@@ -122,7 +130,7 @@ public class Zombie_Boss : LivingEntity
 
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
-        if(!dead)
+        if (!Dead)
         {
             hitEffect.transform.position = hitPoint;
             hitEffect.transform.rotation = Quaternion.LookRotation(hitNormal);
@@ -160,7 +168,7 @@ public class Zombie_Boss : LivingEntity
     }
     private void OnTriggerStay(Collider other)
     {
-        if (!dead)
+        if (!Dead)
         {
             zombieAnimator.SetTrigger("Attack");
             if (Time.time >= lastAttackTime + timeBetAttack)
@@ -190,9 +198,9 @@ public class Zombie_Boss : LivingEntity
     IEnumerator cor_ShowZombieParade()
     {
         UIManager.instance.ZombieParade(true);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(paradeWaitTime);
         UIManager.instance.ZombieParade(false);
-        GameManager.instance.last = false;
+        GameManager.instance.SetLastDay(false);
 
     }
 }

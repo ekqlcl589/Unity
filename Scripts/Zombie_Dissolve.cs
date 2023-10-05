@@ -10,35 +10,43 @@ public class Zombie_Dissolve : LivingEntity
     [SerializeField] private Material mtrlDissolve;
     [SerializeField] private float dissolveTime = 2f;
 
-    public LayerMask whatIsTarget; // 추적 대상 레이어
+    [SerializeField] private LayerMask whatIsTarget; // 추적 대상 레이어
 
     private LivingEntity targetEntity; // 추적 대상
     private NavMeshAgent navMeshAgent; // 경로 계산 AI 에이전트
 
-    public ParticleSystem hitEffect; // 피격 시 재생할 파티클 효과
-    public ParticleSystem sunHitEffect;
-    public AudioClip deathSound; // 사망 시 재생할 소리
-    public AudioClip hitSound; // 피격 시 재생할 소리
-    public AudioClip sunHitSound;
+    [SerializeField] private ParticleSystem hitEffect; // 피격 시 재생할 파티클 효과
+    [SerializeField] private ParticleSystem sunHitEffect;
+    [SerializeField] private AudioClip deathSound; // 사망 시 재생할 소리
+    [SerializeField] private AudioClip hitSound; // 피격 시 재생할 소리
+    [SerializeField] private AudioClip sunHitSound;
+
     private Animator zombieAnimator; // 애니메이터 컴포넌트
     private AudioSource zombieAudioPlayer; // 오디오 소스 컴포넌트
     private Renderer zombieRenderer; // 렌더러 컴포넌트
 
-    public GameObject itemPrefab;
+    [SerializeField] private GameObject itemPrefab;
     public System.Action onDie;
 
-    public float damage = 20f; // 공격력
-    public float timeBetAttack = 0.5f; // 공격 간격
+    private float damage; // 공격력
+    private const float timeBetAttack = 0.5f; // 공격 간격
     private float lastAttackTime; // 마지막 공격 시점
 
-    public bool sunHit = false;
+    private bool sunHit = false;
+
+    private const int sunDamage = 20;
+    private const int dayDieCount = 1;
+
+    private const float ColligionRange = 10f;
+
+
     // 추적할 대상이 존재하는지 알려주는 프로퍼티
     private bool hasTarget
     {
         get
         {
             // 추적할 대상이 존재하고, 대상이 사망하지 않았다면 true
-            if (targetEntity != null && !targetEntity.dead)
+            if (targetEntity != null && !targetEntity.Dead)
             {
                 zombieAnimator.SetBool("Att", true);
                 return true;
@@ -58,7 +66,6 @@ public class Zombie_Dissolve : LivingEntity
         zombieAudioPlayer = GetComponent<AudioSource>();
 
         zombieRenderer = GetComponentInChildren<Renderer>();
-        //zombieRenderer = GetComponent<Renderer>();
     }
 
     // 좀비 AI의 초기 스펙을 결정하는 셋업 메서드
@@ -94,33 +101,33 @@ public class Zombie_Dissolve : LivingEntity
     private IEnumerator UpdatePath()
     {
         // 살아 있는 동안 무한 루프
-        while (!dead)
+        while (!Dead)
         {
             if (hasTarget)
             {
                 // 추격 대상이 존재하면 경로를 갱신하고 ai 이동을 계속 진행
-                zombieAnimator.SetFloat("Move", 0.5f);
+                zombieAnimator.SetFloat("Move", naveMeshSlowSpeed);
 
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
-                                
+
             }
             else
             {
                 navMeshAgent.isStopped = true;
-                zombieAnimator.SetFloat("Move", 0f);
+                zombieAnimator.SetFloat("Move", naveMeshStopSpeed);
 
                 //10유닛의 반지름을 가진 가상의 구를 그렸을 때 구와 겹치는 모든 콜라이더를 가져옴
                 //단, whatisTarget 레이어를 가진 콜라이더만 가져오도록 필터링 진행
 
-                Collider[] colliders = Physics.OverlapSphere(transform.position, 10f, whatIsTarget);
+                Collider[] colliders = Physics.OverlapSphere(transform.position, ColligionRange, whatIsTarget);
                 // 모든 콜라이더를 순회하면서 살아 있는 LiveingEntiry 찾기
                 for (int i = 0; i < colliders.Length; i++)
                 {
                     LivingEntity live = colliders[i].GetComponent<LivingEntity>();
 
                     // 컴포넌트가 존재하고 해당 컴포넌트가 살아 있다면
-                    if (live != null && !live.dead)
+                    if (live != null && !live.Dead)
                     {
                         targetEntity = live;
                         break;
@@ -135,7 +142,7 @@ public class Zombie_Dissolve : LivingEntity
     // 데미지를 입었을 때 실행할 처리
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
-        if (!dead)
+        if (!Dead)
         {
             hitEffect.transform.position = hitPoint;
             hitEffect.transform.rotation = Quaternion.LookRotation(hitNormal);
@@ -182,7 +189,7 @@ public class Zombie_Dissolve : LivingEntity
     private void OnTriggerStay(Collider other)
     {
         // 자신이 사망하지 않았고, 최근 공격 시점에서 timebetattack 이상 시간이 지났다면 공격
-        if (!dead && Time.time >= lastAttackTime + timeBetAttack)
+        if (!Dead && Time.time >= lastAttackTime + timeBetAttack)
         {
             LivingEntity attackTarget = other.GetComponent<LivingEntity>();
 
@@ -217,11 +224,11 @@ public class Zombie_Dissolve : LivingEntity
 
     public void Onday()
     {
-        if(!dead && !GameManager.instance.isNight)
+        if (!Dead && !GameManager.instance.GetNightData())
         {
-            health -= 20f;
+            health -= sunDamage;
 
-            if (health <= 0 && !dead)
+            if (health <= dieHealth && !Dead)
             {
                 Die();
             }
@@ -233,29 +240,29 @@ public class Zombie_Dissolve : LivingEntity
 
     private IEnumerator DayDie()
     {
-        while(!dead)
+        while (!Dead)
         {
-            if(!GameManager.instance.isNight && GameManager.instance.last)
+            if (!GameManager.instance.GetNightData() && GameManager.instance.GetLastDay())
             {
                 zombieAudioPlayer.PlayOneShot(sunHitSound);
                 sunHit = true;
                 sunHitEffect.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                 sunHitEffect.Play();
 
-                health -= 20f;
+                health -= sunDamage;
                 //zombieAudioPlayer.PlayOneShot(hitSound);
 
-                if (health <= 0 && !dead)
+                if (health <= dieHealth && !Dead)
                 {
                     AchievementsManager.Instance.OnNotify(AchievementsManager.Achievements.sunKill,
-                         sun: 1);
+                         sun: dayDieCount);
 
                     Die();
                 }
 
             }
-            
-            yield return new WaitForSeconds(1f);
+
+            yield return new WaitForSeconds(dayDieCount);
         }
     }
 
