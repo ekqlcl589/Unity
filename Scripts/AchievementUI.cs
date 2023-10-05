@@ -9,14 +9,17 @@ public class AchievementUI : MonoBehaviour
     Achievement achievement;
 
     private bool active = false;
-    public GameObject AchievementPanel;
+    [SerializeField] private GameObject AchievementPanel;
 
-    public AchievementSlot[] slots;
+    [SerializeField] private AchievementSlot[] slots;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        slots = GetComponentsInChildren<AchievementSlot>();
+    }
     void Start()
     {
         achievement = Achievement.instance;
-        slots = GetComponentsInChildren<AchievementSlot>();
         achievement.onSlotCountChange += SlotChange;
         achievement.onChangeAch += RedrawSlotUI;
         AchievementPanel.SetActive(active);
@@ -37,7 +40,7 @@ public class AchievementUI : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            slots[i].slotnum = i;
+            slots[i].SetSlotNum(i);
             if (i < achievement.AchievementSlot)
                 slots[i].GetComponent<Button>().interactable = true;
             else
@@ -52,7 +55,7 @@ public class AchievementUI : MonoBehaviour
         //{
         //    slots[i].RemoveSlot();
         //}
-        for(int i = 0; i < achievement.achievements.Count; i++)
+        for (int i = 0; i < achievement.achievements.Count; i++)
         {
             slots[i].ach = achievement.achievements[i];
             slots[i].UpdateSlotUI();

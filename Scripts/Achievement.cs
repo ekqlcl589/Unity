@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class Achievement : MonoBehaviour
 {
-    public static Achievement instance;
+    private const int slotnum = 8;
+    private static Achievement m_instance;
+
+    public static Achievement instance
+    {
+        get
+        {
+            if (m_instance == null)
+            {
+                m_instance = FindObjectOfType<Achievement>();
+            }
+            return m_instance;
+        }
+    }
 
     public List<AchievementsManager.Achievements> achievements = new List<AchievementsManager.Achievements>();
 
@@ -26,7 +39,6 @@ public class Achievement : MonoBehaviour
 
         }
     }
-
     public int AchievementSlot
     {
         get => achievementSlot;
@@ -38,29 +50,28 @@ public class Achievement : MonoBehaviour
     }
     private void Awake()
     {
-        if (instance != null)
+        if (instance != this)
         {
             Destroy(gameObject);
-            return;
         }
-        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        achievementSlot = 8;
+        achievementSlot = slotnum;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public bool Addachievement(AchievementsManager.Achievements ach)
     {
-        if(achievements.Count < AchievementSlot)
+        if (achievements.Count < AchievementSlot)
         {
             achievements.Add(ach);
             if (onChangeAch != null)

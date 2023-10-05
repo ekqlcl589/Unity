@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AchievementSlot : MonoBehaviour
 {
-    public int slotnum;
-    public Text achivementText; // 얘는 슬롯 마다 다르게 적혀야 하는 애인데 
+    private int slotnum;
+    public void SetSlotNum(int num) { slotnum = num; }
+
+    public Text achivementText; // 얘는 슬롯 마다 다르게 적용 
     public AchievementsManager.Achievements ach;
     public void UpdateSlotUI()
     {
