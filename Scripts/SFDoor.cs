@@ -5,13 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class SFDoor : MonoBehaviour
 {
-    bool active = false;
-    public GameObject door;
+    private bool active = false;
+
+    [SerializeField] private GameObject door;
+
+    private const int buildIndex = 1;
     // Start is called before the first frame update
     void Start()
     {
         door.SetActive(active);
-        
+
     }
 
     // Update is called once per frame
@@ -20,9 +23,9 @@ public class SFDoor : MonoBehaviour
         if (door == null)
             return;
 
-        if (SceneManager.GetActiveScene().buildIndex == 1)
+        if (SceneManager.GetActiveScene().buildIndex == buildIndex)
         {
-            if (GameManager.instance.clear)
+            if (GameManager.instance.GetLastDay())
                 active = true;
 
             door.SetActive(active);

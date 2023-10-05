@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class ChangeWeapon : MonoBehaviour
 {
-    public GameObject defaultWeapon;
-    public GameObject Weapon;
-    public CamChange cam;
+    [SerializeField] private GameObject defaultWeapon;
+    [SerializeField] private GameObject Weapon;
+    [SerializeField] private CamChange cam;
+
+    private const float pointX = 65f;
+    private const float pointY = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -23,35 +26,27 @@ public class ChangeWeapon : MonoBehaviour
 
     void OnChangeWeapon()
     {
-        if(Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            GameManager.instance.weaponNum = 1;
+            GameManager.instance.SetWeaponNum(1); // ¾²À¾...
             defaultWeapon.SetActive(false);
             Weapon.SetActive(true);
 
             Vector3 position = SelectWeaponUI.Instance.weaponUI.transform.localPosition;
-            position.x = 65f;
-            position.y = 0f;
+            position.x = pointX;
+            position.y = pointY;
             SelectWeaponUI.Instance.weaponUI.transform.localPosition = position;
-            //CamChange.Instance.firstPersonCamera.enabled = false;
-            //CamChange.Instance.overheadCamera.enabled = true;
-
-            //cam.onChangePriority();
-
         }
-        else if(Input.GetKeyDown(KeyCode.V))
+        else if (Input.GetKeyDown(KeyCode.V))
         {
-            GameManager.instance.weaponNum = 0;
+            GameManager.instance.SetWeaponNum(0);
             defaultWeapon.SetActive(true);
             Weapon.SetActive(false);
 
             Vector3 position = SelectWeaponUI.Instance.weaponUI.transform.localPosition;
-            position.x = 0f;
-            position.y = 0f;
+            position.x = pointY;
+            position.y = pointY;
             SelectWeaponUI.Instance.weaponUI.transform.localPosition = position;
-            //CamChange.Instance.ShowFirstPersonView();
-            //cam.onChangePriority();
-
         }
     }
 }

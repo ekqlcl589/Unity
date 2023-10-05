@@ -5,30 +5,43 @@ using UnityEngine.AI;
 
 public class ZombieParade : MonoBehaviour
 {
-    public Zombie_Dissolve[] zombies;
-    public Transform playerTransform;
+    [SerializeField] private Zombie_Dissolve[] zombies;
+    [SerializeField] private Transform playerTransform;
 
     private List<Zombie_Dissolve> zombielist = new List<Zombie_Dissolve>();
-    public float distance = 20f;
+
+    private float distance = 20f;
+
     private int cnt = 50;
+
     private bool safe = false;
+
+    private const float destroyCount = 5f;
+
+    private const int startCount = 50;
+
+    private const int clearCount = 35;
+
+    private const int randomCountRange = 0;
+
+    private const float wateForSecond = 5f;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!GameManager.instance.last && !GameManager.instance.isGameover && zombielist.Count <= 50)
+        if (!GameManager.instance.GetLastDay() && !GameManager.instance.isGameover && zombielist.Count <= startCount)
         {
-           Spawn();
+            Spawn();
         }
 
-        if (cnt <= 35 && !safe)
+        if (cnt <= clearCount && !safe)
         {
-            GameManager.instance.clear = true;
+            GameManager.instance.SetClearData(true);
             StartCoroutine(Cor_ShowSafeText5Sec());
         }
     }
@@ -38,15 +51,15 @@ public class ZombieParade : MonoBehaviour
         Vector3 spawnPosition =
         GetRandomPointOnNavMesh(playerTransform.position, distance);
 
-        Zombie_Dissolve selectedItem = zombies[Random.Range(0, zombies.Length)];
+        Zombie_Dissolve selectedItem = zombies[Random.Range(randomCountRange, zombies.Length)];
         Zombie_Dissolve zombie = Instantiate(selectedItem, spawnPosition, Quaternion.identity);
 
         zombielist.Add(zombie);
 
-        zombie.onDeath += () => Destroy(zombie.gameObject, 5f);
+        zombie.onDeath += () => Destroy(zombie.gameObject, destroyCount);
 
         zombie.onDeath += () => cnt--;
-        
+
     }
 
     private Vector3 GetRandomPointOnNavMesh(Vector3 center, float distance)
@@ -68,7 +81,7 @@ public class ZombieParade : MonoBehaviour
     IEnumerator Cor_ShowSafeText5Sec()
     {
         UIManager.instance.SafeHouse(true);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(wateForSecond);
         UIManager.instance.SafeHouse(false);
         safe = true;
     }

@@ -2,11 +2,12 @@
 using UnityEngine;
 
 // 점수와 게임 오버 여부를 관리하는 게임 매니저
-public class GameManager : MonoBehaviour 
+public class GameManager : MonoBehaviour
 {
     public System.Action action;
 
     // 싱글톤 접근용 프로퍼티
+
     public static GameManager instance
     {
         get
@@ -23,17 +24,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private static GameManager m_instance; // 싱글톤이 할당될 static 변수
-
     public bool isGameover { get; private set; } // 게임 오버 상태
 
-    public bool isNight = false;
+    public bool GetNightData() { return isNight; }
+    public void SetNightData(bool night) { isNight = night; }
 
-    public int zombieCount = 0;
+    public int getZombieCount() { return zombieCount; }
 
-    public int dayCount = 0;
-
-    private bool isInput = true;
+    public int getDayCount() { return dayCount; }
 
     public bool IsInput
     {
@@ -41,15 +39,38 @@ public class GameManager : MonoBehaviour
         set => isInput = value;
     }
 
-    public bool last = false;
+    public bool GetLastDay() { return last; }
+    public void SetLastDay(bool isLast) { last = isLast; }
 
-    public bool clear = false;
+    public bool GetClearData() { return clear; }
+    public void SetClearData(bool isClear) { clear = isClear; }
 
-    public bool SafeHouse = false;
+    public bool GetSafeHouse() { return SafeHouse; }
+    public void SetSafeHouse(bool isSafeHouse) { SafeHouse = isSafeHouse; }
 
-    public int weaponNum = 0;
+    public int GetWeaponNum() { return weaponNum; }
+    public void SetWeaponNum(int isWeaponNum) { weaponNum = isWeaponNum; }
 
-    private void Awake() {
+    private static GameManager m_instance; // 싱글톤이 할당될 static 변수
+
+    private int zombieCount = 0;
+
+    private int dayCount = 0;
+
+    private int weaponNum = 0;
+
+    private bool isNight = false;
+
+    private bool isInput = true;
+
+    private bool last = false;
+
+    private bool clear = false;
+
+    private bool SafeHouse = false;
+
+    private void Awake()
+    {
         // 씬에 싱글톤 오브젝트가 된 다른 GameManager 오브젝트가 있다면
         if (instance != this)
         {
@@ -59,18 +80,15 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start() 
+    private void Start()
     {
-        //action += AddDayPoint;    
-
         // 플레이어 캐릭터의 사망 이벤트 발생시 게임 오버
         FindObjectOfType<PlayerHealth>().onDeath += EndGame;
-
     }
 
     public void AddDayCount(int newDayCount)
     {
-        if(!isGameover)
+        if (!isGameover)
         {
             dayCount += newDayCount;
 
@@ -96,7 +114,8 @@ public class GameManager : MonoBehaviour
         }
     }
     // 게임 오버 처리
-    public void EndGame() {
+    public void EndGame()
+    {
         // 게임 오버 상태를 참으로 변경
         isGameover = true;
         // 게임 오버 UI를 활성화

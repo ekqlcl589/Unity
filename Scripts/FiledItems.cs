@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class FiledItems : MonoBehaviour
 {
-    public Item item;
-    //public SpriteRenderer image;
+    [SerializeField] private Item item;
 
     public void SetItem(Item _item)
     {
-        item.itemName = _item.itemName;
-        item.itemImage = _item.itemImage;
-        item.type = _item.type;
-        item.itemToolTip = _item.itemToolTip;
-        //image.sprite = item.itemImage;
-        //item.itemImage = image.sprite;
+        item.SetItemName(_item.GetItemName());
+        item.SetItemSpriteImage(_item.GetItemSpriteImage());
+        item.SetItemType(_item.GetItemType());
+        item.SetItemToolTip(_item.GetItemToolTip());
     }
 
     public Item GetItem()

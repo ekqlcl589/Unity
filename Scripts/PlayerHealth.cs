@@ -3,15 +3,15 @@ using UnityEngine;
 using UnityEngine.UI; // UI 관련 코드
 
 // 플레이어 캐릭터의 생명체로서의 동작을 담당
-public class PlayerHealth : LivingEntity 
+public class PlayerHealth : LivingEntity
 {
-    public Slider healthSlider; // 체력을 표시할 UI 슬라이더
-    public Slider hungerSlider;
-    public Slider temperatureSlider;
+    [SerializeField] private Slider healthSlider; // 체력을 표시할 UI 슬라이더
+    [SerializeField] private Slider hungerSlider;
+    [SerializeField] private Slider temperatureSlider;
 
-    public AudioClip deathClip; // 사망 소리
-    public AudioClip hitClip; // 피격 소리
-    public AudioClip itemPickupClip; // 아이템 습득 소리
+    [SerializeField] private AudioClip deathClip; // 사망 소리
+    [SerializeField] private AudioClip hitClip; // 피격 소리
+    [SerializeField] private AudioClip itemPickupClip; // 아이템 습득 소리
 
     private AudioSource playerAudioPlayer; // 플레이어 소리 재생기
     private Animator playerAnimator; // 플레이어의 애니메이터
@@ -21,7 +21,14 @@ public class PlayerHealth : LivingEntity
 
     private bool isGod = false;
 
-    private void Awake() {
+    private const float destroyCount = 3f;
+
+    private const float wateForSeconds1 = 1f;
+    private const float wateForSeconds5 = 5f;
+    private const float wateForSeconds7 = 7f;
+
+    private void Awake()
+    {
         // 사용할 컴포넌트를 가져오기
         playerAnimator = GetComponent<Animator>();
         playerAudioPlayer = GetComponent<AudioSource>();
@@ -47,7 +54,8 @@ public class PlayerHealth : LivingEntity
         if (Input.GetKeyDown(KeyCode.K))
             isGod = true;
     }
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
         // LivingEntity의 OnEnable() 실행 (상태 초기화)
         base.OnEnable();
 
@@ -75,7 +83,8 @@ public class PlayerHealth : LivingEntity
     }
 
     // 체력 회복
-    public override void RestoreHealth(float newHealth) {
+    public override void RestoreHealth(float newHealth)
+    {
         // LivingEntity의 RestoreHealth() 실행 (체력 증가)
         base.RestoreHealth(newHealth);
 
@@ -111,23 +120,25 @@ public class PlayerHealth : LivingEntity
         temperatureSlider.value = Temperature;
     }
     // 데미지 처리
-    public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitDirection) {
+    public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitDirection)
+    {
 
-        if(!dead)
+        if (!Dead)
         {
             playerAudioPlayer.PlayOneShot(hitClip);
         }
         // LivingEntity의 OnDamage() 실행(데미지 적용)
-        if(!isGod)
+        if (!isGod)
             base.OnDamage(damage, hitPoint, hitDirection);
 
         healthSlider.value = health;
     }
 
     // 사망 처리
-    public override void Die() {
+    public override void Die()
+    {
         // LivingEntity의 Die() 실행(사망 적용)
-        if(!isGod)
+        if (!isGod)
             base.Die();
 
         healthSlider.gameObject.SetActive(false);
@@ -140,30 +151,30 @@ public class PlayerHealth : LivingEntity
 
         playerShooter.enabled = false;
 
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, destroyCount);
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other)
+    {
         // 아이템과 충돌한 경우 해당 아이템을 사용하는 처리
 
-        if(!dead)
+        if (!Dead)
         {
             IItem item = other.GetComponent<IItem>();
-        
-            if(item != null)
+
+            if (item != null)
             {
-               item.Use(gameObject);
-        
-               // playerAudioPlayer.PlayOneShot(itemPickupClip);
+                item.Use(gameObject);
+
             }
         }
     }
 
     private IEnumerator UpdateHungerGauge()
     {
-        while(!dead && !GameManager.instance.SafeHouse && !isGod)
+        while (!Dead && !GameManager.instance.GetLastDay() && !isGod)
         {
-            if(Hunger >= 0)
+            if (Hunger >= dieHealth)
             {
                 if (currentHungryDecreaseTime <= hungryDecreaseTime)
                     currentHungryDecreaseTime++;
@@ -179,25 +190,25 @@ public class PlayerHealth : LivingEntity
                 health -= hungryDecreasePoint;
                 healthSlider.value = health;
 
-                if(health <= 0)
+                if (health <= dieHealth)
                 {
                     Die();
                     break;
                 }
-                yield return new WaitForSeconds(1f); // 테스트용 나중에는 시간값 더 올려서 사용
+                yield return new WaitForSeconds(wateForSeconds1);
 
                 //break;
 
             }
-            yield return new WaitForSeconds(5f); // 테스트용 나중에는 시간값 더 올려서 사용
+            yield return new WaitForSeconds(wateForSeconds5);
         }
     }
 
     private IEnumerator UpdateTemperatureGauge()
     {
-        while(!dead && !GameManager.instance.SafeHouse && !isGod)
+        while (!Dead && !GameManager.instance.GetLastDay() && !isGod)
         {
-            if(Temperature >= 0)
+            if (Temperature >= minTemperature)
             {
                 if (currentTemperatureDecreaseTime <= temperatureDecreaseTime)
                     currentTemperatureDecreaseTime++;
@@ -213,14 +224,14 @@ public class PlayerHealth : LivingEntity
                 health -= temperatureDecreasePoint;
                 healthSlider.value = health;
 
-                if(health <= 0)
+                if (health <= dieHealth)
                 {
                     Die();
                     break;
                 }
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(wateForSeconds1);
             }
-            yield return new WaitForSeconds(7f);
+            yield return new WaitForSeconds(wateForSeconds7);
         }
     }
 }

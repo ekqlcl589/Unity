@@ -5,25 +5,36 @@ using UnityEngine.UI;
 
 public class Cook : MonoBehaviour
 {
-    public static Cook instance;
+    public static Cook instance
+    {
+        get
+        {
+            if (m_instance == null)
+            {
+                m_instance = FindObjectOfType<Cook>();
+            }
 
-    public GameObject cookPanel;
-    bool active = false;
+            return m_instance;
+        }
+    }
+    public static Cook m_instance;
+
+    [SerializeField] private GameObject cookPanel;
+
+    private bool active = false;
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance != this)
         {
             Destroy(gameObject);
-            return;
         }
-        instance = this;
-
+        DontDestroyOnLoad(gameObject);
     }
 
     public void Start()
     {
-       cookPanel.SetActive(active);
+        cookPanel.SetActive(active);
 
     }
 

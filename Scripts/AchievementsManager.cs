@@ -7,14 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class AchievementsManager : MonoBehaviour
 {
-    private const int killCount = 3;
-    private const int achievement_hideTextTime = 5;
-    private const achievement_1Count = 1;
-    private const achievement_3Count = 3;
-    private const achievement_5Count = 5;
-    private const achievement_7Count = 7;
-    private const achievement_10Count = 10;
-
     Text _achievementText;
     public Text achievementText
     {
@@ -44,6 +36,10 @@ public class AchievementsManager : MonoBehaviour
         safeHouse,
     }
 
+    private const float wateForSecond = 5f;
+
+    private int[] achievementCount = { 1, 3, 7, 10 };
+
     private void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoad;
@@ -66,10 +62,8 @@ public class AchievementsManager : MonoBehaviour
         }
     }
 
-    Dictionary<Achievements, bool> _dicAchievementUnlock =
-        new Dictionary<Achievements, bool>(new AchievementsComparer());
-
     static AchievementsManager _instance;
+
     public static AchievementsManager Instance
     {
         get
@@ -83,6 +77,9 @@ public class AchievementsManager : MonoBehaviour
             return _instance;
         }
     }
+
+    Dictionary<Achievements, bool> _dicAchievementUnlock =
+        new Dictionary<Achievements, bool>(new AchievementsComparer());
 
     public void OnNotify(Achievements achv, int kill = 0, int food = 0, int cook = 0, int day = 0, int special = 0, int sun = 0, int safeHouse = 0)
     {
@@ -140,7 +137,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.kill1])
             return;
 
-        if (toKill >= 3)
+        if (toKill >= achievementCount[1])
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 좀비 사냥꾼 \n"));
             _dicAchievementUnlock[Achievements.kill1] = true;
@@ -153,7 +150,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.food1])
             return;
 
-        if (food >= defaultAchievementCount)
+        if (food >= achievementCount[0])
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 최초의 식량 \n"));
             _dicAchievementUnlock[Achievements.food1] = true;
@@ -166,7 +163,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.cook1])
             return;
 
-        if (cook >= defaultAchievementCount)
+        if (cook >= achievementCount[0])
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 요리사 등장 \n"));
             _dicAchievementUnlock[Achievements.cook1] = true;
@@ -179,7 +176,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.kill10])
             return;
 
-        if (kill >= 10)
+        if (kill >= achievementCount[3])
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 좀비 학살자 \n"));
             _dicAchievementUnlock[Achievements.kill10] = true;
@@ -192,7 +189,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.day3])
             return;
 
-        if (day >= 3)
+        if (day >= achievementCount[1])
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 생존가 \n"));
             _dicAchievementUnlock[Achievements.day3] = true;
@@ -205,7 +202,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.day7])
             return;
 
-        if (day >= 7)
+        if (day >= achievementCount[2])
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 생활의 달인 \n"));
             _dicAchievementUnlock[Achievements.day7] = true;
@@ -219,7 +216,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.specialFood])
             return;
 
-        if (food >= defaultAchievementCount)
+        if (food >= achievementCount[0])
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 완벽한 음식..? \n"));
             _dicAchievementUnlock[Achievements.specialFood] = true;
@@ -233,7 +230,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.sunKill])
             return;
 
-        if (kill >= defaultAchievementCount)
+        if (kill >= achievementCount[0])
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 돋보기 실험 \n"));
             _dicAchievementUnlock[Achievements.sunKill] = true;
@@ -246,7 +243,7 @@ public class AchievementsManager : MonoBehaviour
         if (_dicAchievementUnlock[Achievements.safeHouse])
             return;
 
-        if (safe >= defaultAchievementCount)
+        if (safe >= achievementCount[0])
         {
             StartCoroutine(Cor_ShowText5Sec("업적 달성! \n 은신처 도착\n"));
             _dicAchievementUnlock[Achievements.safeHouse] = true;
@@ -257,7 +254,7 @@ public class AchievementsManager : MonoBehaviour
     IEnumerator Cor_ShowText5Sec(string text)
     {
         achievementText.text += text;
-        yield return new WaitForSeconds(textTime);
+        yield return new WaitForSeconds(wateForSecond);
         achievementText.text = string.Empty;
     }
 }

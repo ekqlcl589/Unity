@@ -5,11 +5,9 @@ using UnityEngine.UI;
 
 public class ItemToolTip : MonoBehaviour
 {
-    [SerializeField]
-    private Text titleText;
+    [SerializeField] private Text titleText;
 
-    [SerializeField]
-    private Text contentText;
+    [SerializeField] private Text contentText;
 
     private RectTransform rect;
     private CanvasScaler canvasScaler;
@@ -52,7 +50,7 @@ public class ItemToolTip : MonoBehaviour
 
     public void SetItemInfo(Item item)
     {
-        titleText.text = item.itemName;
-        contentText.text = item.itemToolTip;
+        titleText.text = item.GetItemName();
+        contentText.text = item.GetItemToolTip();
     }
 }
