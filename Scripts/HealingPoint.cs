@@ -5,20 +5,23 @@ using UnityEngine;
 public class HealingPoint : MonoBehaviour, IItem
 {
     public LayerMask whatIsTarget; // 플레이어만 회복 시켜야 함
-    
+
     private LivingEntity targetEntiry;
 
-    public float healing = 7f; // x 체온
-    public float timeBetHeal = 1f; // 체력 회복 간격
+    [SerializeField] private float healing = 7f; // x 체온
+    [SerializeField] private float timeBetHeal = 1f; // 체력 회복 간격
+
+    private const float navMeshRange = 5f;
     private float lastHealTime; // 마지막 체력 회복 시점
 
+    private const float waitForSecond = 0.25f;
     private bool hasTarget
     {
         get
         {
-            if (targetEntiry != null && !targetEntiry.dead)
+            if (targetEntiry != null && !targetEntiry.Dead)
                 return true;
-            
+
             return false;
         }
 
@@ -33,20 +36,20 @@ public class HealingPoint : MonoBehaviour, IItem
 
     private IEnumerator UpdateHealing() // ㄴㄴ 체온으로 변경
     {
-        if(hasTarget)
+        if (hasTarget)
         {
-           // life.RestoreHealth(health);
+            // life.RestoreHealth(health);
         }
         else
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, whatIsTarget);
-           
+            Collider[] colliders = Physics.OverlapSphere(transform.position, navMeshRange, whatIsTarget);
+
             for (int i = 0; i < colliders.Length; i++)
             {
                 LivingEntity live = colliders[i].GetComponent<LivingEntity>();
                 live.RestoreTemperature(healing);
                 // 컴포넌트가 존재하고 해당 컴포넌트가 살아 있다면
-                if (live != null && !live.dead)
+                if (live != null && !live.Dead)
                 {
                     targetEntiry = live;
                     break;
@@ -54,7 +57,7 @@ public class HealingPoint : MonoBehaviour, IItem
             }
         }
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(waitForSecond);
     }
     private void OnTriggerStay(Collider other)
     {
@@ -74,7 +77,7 @@ public class HealingPoint : MonoBehaviour, IItem
         // LivingEntity컴포넌트가 있다면
         if (life != null)
         {
-            if (life.Temperature >= life.maxTemperature)
+            if (life.Temperature >= life.GetMaxTemperature())
                 return;
             // 체온 회복 실행
             life.RestoreTemperature(healing);
