@@ -18,6 +18,16 @@ public class TransparentObject : MonoBehaviour
     private Coroutine resetCoroutine;
     private Coroutine becomeTransparentCoroutine;
 
+    private int depth = 0;
+    private float alpha = 1f;
+
+    private const float timeInit = 0f;
+
+    private float mtrlMode0 = 0f;
+    private float mtrlMode3 = 3f;
+
+    private int renderQueue = -1;
+    private int renderQueue3000 = 3000;
     void Awake()
     {
         renderers = GetComponentsInChildren<MeshRenderer>();
@@ -27,7 +37,7 @@ public class TransparentObject : MonoBehaviour
     {
         if (IsTransparent)
         {
-            timer = 0f;
+            timer = timeInit;
             return;
         }
 
@@ -52,7 +62,7 @@ public class TransparentObject : MonoBehaviour
         material.SetFloat("_Mode", mode);
         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        material.SetInt("ZWrite", 0);
+        material.SetInt("ZWrite", depth);
         material.DisableKeyword("_ALPHATEST_ON");
         material.EnableKeyword("_ALPHABLEND_ON");
         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
@@ -65,7 +75,7 @@ public class TransparentObject : MonoBehaviour
         {
             foreach (Material material in renderers[i].materials)
             {
-                SetMaterialRenderingMode(material, 3f, 3000);
+                SetMaterialRenderingMode(material, mtrlMode3, renderQueue3000);
             }
         }
     }
@@ -76,7 +86,7 @@ public class TransparentObject : MonoBehaviour
         {
             foreach (Material material in renderers[i].materials)
             {
-                SetMaterialRenderingMode(material, 0f, -1);
+                SetMaterialRenderingMode(material, mtrlMode0, renderQueue);
             }
         }
     }
@@ -99,9 +109,9 @@ public class TransparentObject : MonoBehaviour
                 if (renderers[i].material.color.a > THRESHOLD_ALPHA)
                     isComplete = false;
 
-                 Color color = renderers[i].material.color;
-                 color.a -= Time.deltaTime;
-                 renderers[i].material.color = color;
+                Color color = renderers[i].material.color;
+                color.a -= Time.deltaTime;
+                renderers[i].material.color = color;
             }
 
             if (isComplete)
@@ -119,12 +129,12 @@ public class TransparentObject : MonoBehaviour
         IsTransparent = false;
 
         while (true)
-            {
+        {
             bool isComplete = true;
 
             for (int i = 0; i < renderers.Length; i++)
             {
-                if (renderers[i].material.color.a < 1f)
+                if (renderers[i].material.color.a < alpha)
                     isComplete = false;
 
                 Color color = renderers[i].material.color;
@@ -139,7 +149,6 @@ public class TransparentObject : MonoBehaviour
             }
 
             yield return resetDelay;
-
         }
     }
 
@@ -152,7 +161,7 @@ public class TransparentObject : MonoBehaviour
 
     private IEnumerator CheckTimerCouroutine()
     {
-        timer = 0f;
+        timer = timeInit;
 
         while (true)
         {
@@ -168,4 +177,5 @@ public class TransparentObject : MonoBehaviour
             yield return null;
         }
     }
+
 }

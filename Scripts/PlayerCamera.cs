@@ -24,7 +24,7 @@ public class PlayerCamera : MonoBehaviour
     }
     private void Awake()
     {
-        if (instance != this)
+        if (Instance != this)
         {
             Destroy(gameObject);
         }
