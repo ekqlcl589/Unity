@@ -8,9 +8,14 @@ public class LoadingSceneController : MonoBehaviour
 {
     static string nextScene;
 
-    [SerializeField]
-    Image progressBar;
 
+    [SerializeField] private Image progressBar;
+
+    private const float loadingWaitTime = 0.01f;
+
+    private float progressbarDelay = 0.9f; // 비동기 로딩이라 값 임의로 조정
+
+    private const float progressbarComplate = 1f;
     public static void LoadScene(string sceneName)
     {
         nextScene = sceneName;
@@ -21,8 +26,6 @@ public class LoadingSceneController : MonoBehaviour
     void Start()
     {
         StartCoroutine(LoadSceneProcess());
-
-        //Invoke("RandomTipText", 0.3f);
     }
 
     IEnumerator LoadSceneProcess()
@@ -33,19 +36,19 @@ public class LoadingSceneController : MonoBehaviour
         // 로딩화면에서 불러와야 하는 게 씬 만 있는게 아님 볼륨이 커지면 에셋 번들로 나눠서 부르고 이걸 읽어 와야 하는데 
         // 리소스 로딩이 끝나기 전에 씬 로딩이 끝나면 오브젝트들이 깨져서 보임
         float timer = 0f;
-        while(!op.isDone)
+        while (!op.isDone)
         {
-            yield return new WaitForSeconds(0.01f); // 안 해주면 바가 넘어가는 게 안 보임
+            yield return new WaitForSeconds(loadingWaitTime); // 안 해주면 바가 넘어가는 게 안 보임
 
-            if(op.progress < 0.9f)
+            if (op.progress < progressbarDelay)
             {
                 progressBar.fillAmount = op.progress;
             }
             else // 페이크 로딩 1초간 채워서 씬을 불러옴
             {
                 timer += Time.unscaledDeltaTime;
-                progressBar.fillAmount = Mathf.Lerp(0.9f, 1f, timer); // 1초에 걸쳐서 채워짐
-                if(progressBar.fillAmount >= 1f)
+                progressBar.fillAmount = Mathf.Lerp(progressbarDelay, progressbarComplate, timer); // 1초에 걸쳐서 채워짐
+                if (progressBar.fillAmount >= progressbarComplate)
                 {
                     op.allowSceneActivation = true;
                     yield break;

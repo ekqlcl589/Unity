@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 public class SelectWeaponUI : MonoBehaviour
 {
-    Image _weaponUI;
+    [SerializeField] private Image _weaponUI;
 
     public Image weaponUI
     {
         get
         {
-            if(_weaponUI == null)
+            if (_weaponUI == null)
             {
                 GameObject ui = GameObject.Find("HUD Canvas/WeaponUI/OutLine/Image");
                 if (ui != null)
@@ -20,7 +20,7 @@ public class SelectWeaponUI : MonoBehaviour
         }
     }
 
-    static SelectWeaponUI _instance;
+    private static SelectWeaponUI _instance;
 
     public static SelectWeaponUI Instance
     {
@@ -35,5 +35,4 @@ public class SelectWeaponUI : MonoBehaviour
             return _instance;
         }
     }
-    //혹시 모르니 적어둠 모델 무기 잡는 손 이름 Weapon_R
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 public class MovableHeaderUI : MonoBehaviour, IPointerDownHandler, IDragHandler
 {
-    [SerializeField]
-    private Transform _targetTr; // 이동될 UI
+    [SerializeField] private Transform _targetTr; // 이동될 UI
 
     private Vector2 _beginPoint;
     private Vector2 _moveBegin;

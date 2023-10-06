@@ -5,17 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
-    public GameObject camera;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
+    [SerializeField] private GameObject camera;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -24,7 +14,6 @@ public class SceneChange : MonoBehaviour
             GameObject currCamera = FindObjectOfType<PlayerCamera>().gameObject;
 
             LoadingSceneController.LoadScene("SafeHouse");
-            //SceneManager.LoadScene("SafeHouse");
 
             Instantiate(camera, currCamera.transform.position, currCamera.transform.rotation);
         }

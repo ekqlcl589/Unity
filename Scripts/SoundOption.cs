@@ -6,13 +6,14 @@ using UnityEngine.Audio;
 
 public class SoundOption : MonoBehaviour
 {
-    public AudioMixer audioMixer;
+    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private Slider bgmSlider;
+    [SerializeField] private Slider sfxSlider;
+    [SerializeField] private GameObject soundPanel;
+    private bool active = false;
 
-    public Slider bgmSlider;
-    public Slider sfxSlider;
+    private float amplification = 20f;
 
-    public GameObject soundPanel;
-    bool active = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,11 +34,11 @@ public class SoundOption : MonoBehaviour
 
     public void SetBgmVolume()
     {
-        audioMixer.SetFloat("BGM", Mathf.Log10(bgmSlider.value) * 20);
+        audioMixer.SetFloat("BGM", Mathf.Log10(bgmSlider.value) * amplification);
     }
     public void SetSfxVolume()
     {
-        audioMixer.SetFloat("SFX", Mathf.Log10(bgmSlider.value) * 20);
+        audioMixer.SetFloat("SFX", Mathf.Log10(bgmSlider.value) * amplification);
     }
 
 }
