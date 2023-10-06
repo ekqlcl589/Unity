@@ -37,7 +37,7 @@ public class DayAndNight : MonoBehaviour
     void Update()
     {
         // 조명을 x 축으로 회전 현실시간 1초에 rotateTime * secondPerRealTimeSecond 각도만큼 회전
-        GameManager.instance.IsNight = isNight;
+        GameManager.instance.NightCheck(isNight);
 
         transform.Rotate(Vector3.right, rotateTime * secondPerRealTimeSecond * Time.deltaTime);
         if (transform.eulerAngles.x >= maxEulerAngleX)

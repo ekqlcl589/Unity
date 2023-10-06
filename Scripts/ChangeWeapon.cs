@@ -31,7 +31,8 @@ public class ChangeWeapon : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            GameManager.instance.WeaponNum = weaponNum1;
+            //GameManager.instance.WeaponNum = weaponNum1; // ¾²À¾... ÀÌ°Ç Ä¸½¶È­¸¦ À§¹ÝÇÏ´Â ÇàÀ§Áö... 
+            GameManager.instance.WeaponNumChange(false);
             defaultWeapon.SetActive(false);
             Weapon.SetActive(true);
 
@@ -42,7 +43,8 @@ public class ChangeWeapon : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            GameManager.instance.WeaponNum = weaponNum0;
+            //GameManager.instance.WeaponNum = weaponNum0;
+            GameManager.instance.WeaponNumChange(true);
             defaultWeapon.SetActive(true);
             Weapon.SetActive(false);
 

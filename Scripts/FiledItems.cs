@@ -8,10 +8,11 @@ public class FiledItems : MonoBehaviour
 
     public void SetItem(Item _item)
     {
-        item.ItemName = _item.ItemName;
-        item.ItemImage = _item.ItemImage;
-        item.ItemType = _item.ItemType;
-        item.ItemToolTip = _item.ItemToolTip;
+        item.Swap(_item);
+        //item.ItemName = _item.ItemName;
+        //item.ItemImage = _item.ItemImage;
+        //item.ItemType = _item.ItemType;
+        //item.ItemToolTip = _item.ItemToolTip;
     }
 
     public Item GetItem()
