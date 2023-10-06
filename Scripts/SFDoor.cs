@@ -25,7 +25,7 @@ public class SFDoor : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex == buildIndex)
         {
-            if (GameManager.instance.GetLastDay())
+            if (GameManager.instance.Last)
                 active = true;
 
             door.SetActive(active);

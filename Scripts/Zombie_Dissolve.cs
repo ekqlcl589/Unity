@@ -71,14 +71,14 @@ public class Zombie_Dissolve : LivingEntity
     // 좀비 AI의 초기 스펙을 결정하는 셋업 메서드
     public void Setup(ZombieData zombieData)
     {
-        startingHealth = zombieData.health;
-        health = zombieData.health;
+        startingHealth = zombieData.Health;
+        health = zombieData.Health;
 
-        damage = zombieData.damage;
+        damage = zombieData.Damage;
 
-        navMeshAgent.speed = zombieData.speed;
+        navMeshAgent.speed = zombieData.Speed;
 
-        zombieRenderer.material.color = zombieData.skinColor;
+        zombieRenderer.material.color = zombieData.SkinColor;
     }
 
     private void Start()
@@ -224,7 +224,7 @@ public class Zombie_Dissolve : LivingEntity
 
     public void Onday()
     {
-        if (!Dead && !GameManager.instance.GetNightData())
+        if (!Dead && !GameManager.instance.IsNight)
         {
             health -= sunDamage;
 
@@ -242,7 +242,7 @@ public class Zombie_Dissolve : LivingEntity
     {
         while (!Dead)
         {
-            if (!GameManager.instance.GetNightData() && GameManager.instance.GetLastDay())
+            if (!GameManager.instance.IsNight && GameManager.instance.Last)
             {
                 zombieAudioPlayer.PlayOneShot(sunHitSound);
                 sunHit = true;

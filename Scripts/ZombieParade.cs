@@ -25,6 +25,7 @@ public class ZombieParade : MonoBehaviour
     private const int randomCountRange = 0;
 
     private const float wateForSecond = 5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,14 +35,14 @@ public class ZombieParade : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.instance.GetLastDay() && !GameManager.instance.isGameover && zombielist.Count <= startCount)
+        if (!GameManager.instance.Last && !GameManager.instance.isGameover && zombielist.Count <= startCount)
         {
             Spawn();
         }
 
         if (cnt <= clearCount && !safe)
         {
-            GameManager.instance.SetClearData(true);
+            GameManager.instance.Clear = true;
             StartCoroutine(Cor_ShowSafeText5Sec());
         }
     }

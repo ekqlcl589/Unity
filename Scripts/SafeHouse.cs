@@ -12,9 +12,9 @@ public class SafeHouse : MonoBehaviour
             AchievementsManager.Instance.OnNotify(AchievementsManager.Achievements.safeHouse,
                 safeHouse: safePoint);
 
-            GameManager.instance.SetSafeHouse(true);
+            GameManager.instance.SafeHouse = true;
 
-            UIManager.instance.dayText.text = "积粮 己傍";
+            UIManager.instance.GetKillText().text = "积粮 己傍";
         }
     }
 }

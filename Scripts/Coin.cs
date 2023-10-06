@@ -18,7 +18,8 @@ public class Coin : MonoBehaviour, IItem
         PlayerShooter playerShooter = target.GetComponent<PlayerShooter>();
 
         if (playerShooter != null && playerShooter.GetGunData() != null)
-            playerShooter.GetGunData().SetAmmoRemain(ammo);
+            playerShooter.GetGunData().AmmoRemain = ammo;
+
         return true;
     }
 

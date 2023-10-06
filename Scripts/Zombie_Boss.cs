@@ -200,7 +200,7 @@ public class Zombie_Boss : LivingEntity
         UIManager.instance.ZombieParade(true);
         yield return new WaitForSeconds(paradeWaitTime);
         UIManager.instance.ZombieParade(false);
-        GameManager.instance.SetLastDay(false);
+        GameManager.instance.Last = false;
 
     }
 }

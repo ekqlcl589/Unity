@@ -65,7 +65,7 @@ public class Item : IItem
             PlayerShooter playerShooter = target.GetComponent<PlayerShooter>();
 
             if (playerShooter != null && playerShooter.GetGunData() != null)
-                playerShooter.GetGunData().ammoRemain += ammoRemain;
+                playerShooter.GetGunData().AmmoRemain = ammoRemain;
 
         }
 

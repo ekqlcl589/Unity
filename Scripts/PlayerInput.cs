@@ -24,6 +24,8 @@ public class PlayerInput : MonoBehaviour
     public bool jump { get; private set; } // 감지된 점프 입력값
 
     public bool Use { get; private set; }
+
+    private int buildIndex = 2;
     // 매프레임 사용자 입력을 감지
 
     private void Start()
@@ -38,15 +40,10 @@ public class PlayerInput : MonoBehaviour
             move = initPoint;
 
             rotate = initPoint;
-
             fire = false;
-            
             reload = false;
-            
             jump = false;
-            
             Use = false;
-            
             return;
         }
 
@@ -63,7 +60,7 @@ public class PlayerInput : MonoBehaviour
 
         Use = Input.GetButtonDown(useButtonName);
 
-        if (SceneManager.GetActiveScene().buildIndex == 2 && !GameManager.instance.GetSafeHouse())
+        if (SceneManager.GetActiveScene().buildIndex == buildIndex && !GameManager.instance.SafeHouse)
         {
             gameObject.transform.position = safeHouseStartPoint;
         }

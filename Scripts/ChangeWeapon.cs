@@ -11,6 +11,9 @@ public class ChangeWeapon : MonoBehaviour
     private const float pointX = 65f;
     private const float pointY = 0f;
 
+    private const int weaponNum0 = 0;
+    private const int weaponNum1 = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +31,7 @@ public class ChangeWeapon : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            GameManager.instance.SetWeaponNum(1); // ¾²À¾...
+            GameManager.instance.WeaponNum = weaponNum1;
             defaultWeapon.SetActive(false);
             Weapon.SetActive(true);
 
@@ -39,7 +42,7 @@ public class ChangeWeapon : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            GameManager.instance.SetWeaponNum(0);
+            GameManager.instance.WeaponNum = weaponNum0;
             defaultWeapon.SetActive(true);
             Weapon.SetActive(false);
 

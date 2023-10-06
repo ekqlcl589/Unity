@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class AchievementsManager : MonoBehaviour
 {
-    Text _achievementText;
+    private Text _achievementText;
     public Text achievementText
     {
         get

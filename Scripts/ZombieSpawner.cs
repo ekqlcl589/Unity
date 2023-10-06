@@ -34,7 +34,7 @@ public class ZombieSpawner : MonoBehaviour
         }
 
         // 좀비를 모두 물리친 경우 다음 스폰 실행
-        if (zombies.Count <= spawnCount && GameManager.instance.GetNightData())
+        if (zombies.Count <= spawnCount && GameManager.instance.IsNight)
         {
             SpawnWave();
         }
@@ -89,9 +89,9 @@ public class ZombieSpawner : MonoBehaviour
     void AddKillPoint()
     {
         AchievementsManager.Instance.OnNotify(AchievementsManager.Achievements.kill1,
-            kill: GameManager.instance.getZombieCount());
+            kill: GameManager.instance.ZombieCount);
 
         AchievementsManager.Instance.OnNotify(AchievementsManager.Achievements.kill10,
-            kill: GameManager.instance.getZombieCount());
+            kill: GameManager.instance.ZombieCount);
     }
 }

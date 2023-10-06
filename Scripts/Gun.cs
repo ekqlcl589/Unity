@@ -28,12 +28,12 @@ public class Gun : MonoBehaviour
     private float fireDistance = 50f; // 사정거리
 
     private int ammoRemain = 100; // 남은 전체 탄알
+
+    public int AmmoRemain { get { return ammoRemain; } set { ammoRemain = value; } }
+
     private int magAmmo; // 현재 탄알집에 남아 있는 탄알
 
-    public int GetAmmo() { return magAmmo; }
-
-    public int GetAmmoRemain() { return ammoRemain; }
-    public void SetAmmoRemain(int remain) { ammoRemain += remain; }
+    public int MagAmmo { get { return magAmmo; } set { magAmmo = value; } }
 
     private float lastFireTime; // 총을 마지막으로 발사한 시점
 

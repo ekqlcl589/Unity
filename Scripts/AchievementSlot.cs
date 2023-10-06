@@ -7,10 +7,14 @@ using UnityEngine.UI;
 public class AchievementSlot : MonoBehaviour
 {
     private int slotnum;
-    public void SetSlotNum(int num) { slotnum = num; }
+    public int SlotNum { get { return slotnum; } set { slotnum = value; } }
 
-    public Text achivementText; // 얘는 슬롯 마다 다르게 적혀야 하는 애인데 
+    [SerializeField] private Text achivementText;
+
     public AchievementsManager.Achievements ach;
+
+    public AchievementsManager.Achievements Ach { get { return ach; } set { ach = value; } }
+
     public void UpdateSlotUI()
     {
         if (ach == AchievementsManager.Achievements.kill1)

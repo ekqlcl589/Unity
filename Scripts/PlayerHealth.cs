@@ -172,7 +172,7 @@ public class PlayerHealth : LivingEntity
 
     private IEnumerator UpdateHungerGauge()
     {
-        while (!Dead && !GameManager.instance.GetLastDay() && !isGod)
+        while (!Dead && !GameManager.instance.Last && !isGod)
         {
             if (Hunger >= dieHealth)
             {
@@ -206,7 +206,7 @@ public class PlayerHealth : LivingEntity
 
     private IEnumerator UpdateTemperatureGauge()
     {
-        while (!Dead && !GameManager.instance.GetLastDay() && !isGod)
+        while (!Dead && !GameManager.instance.Last && !isGod)
         {
             if (Temperature >= minTemperature)
             {

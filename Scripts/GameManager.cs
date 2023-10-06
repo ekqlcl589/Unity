@@ -26,48 +26,37 @@ public class GameManager : MonoBehaviour
 
     public bool isGameover { get; private set; } // 게임 오버 상태
 
-    public bool GetNightData() { return isNight; }
-    public void SetNightData(bool night) { isNight = night; }
-
-    public int getZombieCount() { return zombieCount; }
-
-    public int getDayCount() { return dayCount; }
-
-    public bool IsInput
-    {
-        get => isInput;
-        set => isInput = value;
-    }
-
-    public bool GetLastDay() { return last; }
-    public void SetLastDay(bool isLast) { last = isLast; }
-
-    public bool GetClearData() { return clear; }
-    public void SetClearData(bool isClear) { clear = isClear; }
-
-    public bool GetSafeHouse() { return SafeHouse; }
-    public void SetSafeHouse(bool isSafeHouse) { SafeHouse = isSafeHouse; }
-
-    public int GetWeaponNum() { return weaponNum; }
-    public void SetWeaponNum(int isWeaponNum) { weaponNum = isWeaponNum; }
 
     private static GameManager m_instance; // 싱글톤이 할당될 static 변수
 
     private int zombieCount = 0;
 
+    public int ZombieCount { get { return zombieCount; } set { zombieCount = value; } }
+
     private int dayCount = 0;
 
     private int weaponNum = 0;
 
+    public int WeaponNum { get { return weaponNum; } set { weaponNum = value; } }
+
     private bool isNight = false;
 
+    public bool IsNight { get { return isNight; } set { isNight = value; } }
+
     private bool isInput = true;
+    public bool IsInput { get { return isInput; } set { isInput = value; } }
 
     private bool last = false;
 
+    public bool Last { get { return last; } set { last = value; } }
+
     private bool clear = false;
 
-    private bool SafeHouse = false;
+    public bool Clear { get { return clear; } set { clear = value; } }
+
+    private bool safeHouse = false;
+
+    public bool SafeHouse { get { return safeHouse; } set { safeHouse = value; } }
 
     private void Awake()
     {

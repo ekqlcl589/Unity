@@ -28,20 +28,20 @@ public class PlayerShooter : MonoBehaviour
     private void OnEnable()
     {
         // 슈터가 활성화될 때 총도 함께 활성화
-         gun.gameObject.SetActive(true);
+        // gun.gameObject.SetActive(true);
     }
 
     private void OnDisable()
     {
         // 슈터가 비활성화될 때 총도 함께 비활성화
-         gun.gameObject.SetActive(false);
+        // gun.gameObject.SetActive(false);
     }
     private void Update()
     {
         // 입력을 감지하고 총 발사하거나 재장전
         if (playerInput.fire)
         {
-            
+            /*
 #if UNITY_EDITOR
             if (EventSystem.current.IsPointerOverGameObject() == true)
                 return;
@@ -64,12 +64,12 @@ public class PlayerShooter : MonoBehaviour
             }
 
 #endif
-
+*/
             if (EventSystem.current.IsPointerOverGameObject() == true)
                 return;
             else
             {
-                if (0 == GameManager.instance.GetWeaponNum())
+                if (0 == GameManager.instance.WeaponNum)
                     gun.Fire();
                 else
                     gunSpecial.Fire();
@@ -81,7 +81,7 @@ public class PlayerShooter : MonoBehaviour
         }
         else if (playerInput.reload)
         {
-            if (0 == GameManager.instance.GetWeaponNum())
+            if (0 == GameManager.instance.WeaponNum)
             {
                 if (gun.Reload())
                 {
@@ -112,10 +112,10 @@ public class PlayerShooter : MonoBehaviour
         if (gun != null && UIManager.instance != null)
         {
             // UI 매니저의 탄약 텍스트에 탄창의 탄약과 남은 전체 탄약을 표시
-            if (0 == GameManager.instance.GetWeaponNum())
-                UIManager.instance.UpdateAmmoText(gun.magAmmo, gun.ammoRemain);
+            if (0 == GameManager.instance.WeaponNum)
+                UIManager.instance.UpdateAmmoText(gun.MagAmmo, gun.AmmoRemain);
             else
-                UIManager.instance.UpdateAmmoText(gunSpecial.magAmmo, gunSpecial.ammoRemain);
+                UIManager.instance.UpdateAmmoText(gunSpecial.MagAmmo, gunSpecial.AmmoRemain);
 
         }
     }
