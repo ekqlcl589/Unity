@@ -2,9 +2,11 @@
 using UnityEngine;
 
 // 총을 구현
-public class Gun : MonoBehaviour {
+public class Gun : MonoBehaviour
+{
     // 총의 상태를 표현하는 데 사용할 타입을 선언
-    public enum State {
+    public enum State
+    {
         Ready, // 발사 준비됨
         Empty, // 탄알집이 빔
         Reloading // 재장전 중
@@ -12,30 +14,42 @@ public class Gun : MonoBehaviour {
 
     public State state { get; private set; } // 현재 총의 상태
 
-    public Transform fireTransform; // 탄알이 발사될 위치
+    [SerializeField] private Transform fireTransform; // 탄알이 발사될 위치
 
-    public ParticleSystem muzzleFlashEffect; // 총구 화염 효과
-    public ParticleSystem shellEjectEffect; // 탄피 배출 효과
+    [SerializeField] private ParticleSystem muzzleFlashEffect; // 총구 화염 효과
+    [SerializeField] private ParticleSystem shellEjectEffect; // 탄피 배출 효과
+
+    [SerializeField] private GunData gunData; // 총의 현재 데이터
 
     private LineRenderer bulletLineRenderer; // 탄알 궤적을 그리기 위한 렌더러
 
     private AudioSource gunAudioPlayer; // 총 소리 재생기
 
-    public GunData gunData; // 총의 현재 데이터
-
     private float fireDistance = 50f; // 사정거리
 
-    public int ammoRemain = 100; // 남은 전체 탄알
-    public int magAmmo; // 현재 탄알집에 남아 있는 탄알
+    private int ammoRemain = 100; // 남은 전체 탄알
+    private int magAmmo; // 현재 탄알집에 남아 있는 탄알
+
+    public int GetAmmo() { return magAmmo; }
+
+    public int GetAmmoRemain() { return ammoRemain; }
+    public void SetAmmoRemain(int remain) { ammoRemain += remain; }
 
     private float lastFireTime; // 총을 마지막으로 발사한 시점
 
-    private void Awake() {
+    private int lineRendererPosition = 2;
+
+    private float effectWaitTime = 0.03f;
+
+    private const int init = 0;
+
+    private void Awake()
+    {
         // 사용할 컴포넌트의 참조 가져오기
         gunAudioPlayer = GetComponent<AudioSource>();
         bulletLineRenderer = GetComponentInChildren<LineRenderer>();
 
-        bulletLineRenderer.positionCount = 2;
+        bulletLineRenderer.positionCount = lineRendererPosition;
 
         bulletLineRenderer.enabled = false;
 
@@ -46,24 +60,18 @@ public class Gun : MonoBehaviour {
         gunData.gun = GunData.gunType.gunNormal;
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         // 총 상태 초기화
 
         state = State.Ready;
 
-        lastFireTime = 0;
+        lastFireTime = init;
     }
 
-    //private void Update()
-    //{
-    //    ammoRemain = gunData.startAmmoRemain;
-    //
-    //    magAmmo = gunData.magCapacity;
-    //
-    //}
-    // 발사 시도, 총을 발사 가능한 상태에서만 Shot() 함수를 실행시키도록 감싸는 역할
-    public void Fire() {
-        if(state == State.Ready && Time.time >= lastFireTime + gunData.timeBetFire) // 마지막 총 발사 시점에서 건데이터.타임벳파이어 이상의 시간이 지났을 때 == 현재 시간이 총을 최근에 발사한 시점 + 발사 간격 이후 인지 
+    public void Fire()
+    {
+        if (state == State.Ready && Time.time >= lastFireTime + gunData.timeBetFire) // 마지막 총 발사 시점에서 건데이터.타임벳파이어 이상의 시간이 지났을 때 == 현재 시간이 총을 최근에 발사한 시점 + 발사 간격 이후 인지 
         {
             // 마지막 총 발사 시점 갱신
             lastFireTime = Time.time;
@@ -72,14 +80,15 @@ public class Gun : MonoBehaviour {
         }
     }
 
-    // 발사 처리
-    private void Shot() {
+    // 실제 발사 처리
+    private void Shot()
+    {
         // 레이캐스트에 의한 충돌 정보를 저장하는 컨테이너
         RaycastHit hit;
         Vector3 hitPosition = Vector3.zero;
 
         // 레이캐스트(시작 지점, 방향, 충돌 정보 컨테이너, 사정거리
-        if(Physics.Raycast(fireTransform.position, fireTransform.forward, out hit, fireDistance))
+        if (Physics.Raycast(fireTransform.position, fireTransform.forward, out hit, fireDistance))
         {
             // 레이가 어떤 물체와 충돌한 경우
 
@@ -107,14 +116,15 @@ public class Gun : MonoBehaviour {
 
         magAmmo--;
 
-        if(magAmmo <= 0)
+        if (magAmmo <= init)
         {
             state = State.Empty;
         }
     }
 
     // 발사 이펙트와 소리를 재생하고 탄알 궤적을 그림
-    private IEnumerator ShotEffect(Vector3 hitPosition) {
+    private IEnumerator ShotEffect(Vector3 hitPosition)
+    {
         // 총구 화염 효과 재생
         muzzleFlashEffect.Play();
         // 탄피 배출 효과 재생
@@ -122,25 +132,25 @@ public class Gun : MonoBehaviour {
         //총격 소리 재생
         gunAudioPlayer.PlayOneShot(gunData.shotClip);
         //선의 시작점은 총구의 위치
-        bulletLineRenderer.SetPosition(0, fireTransform.position);
+        bulletLineRenderer.SetPosition(init, fireTransform.position);
         //선의 끝점은 입력으로 들어온 충돌 위치
         bulletLineRenderer.SetPosition(1, hitPosition);
-        
+
         // 라인 렌더러를 활성화하여 탄알 궤적을 그림
         bulletLineRenderer.enabled = true;
 
         // 0.03초 동안 잠시 처리를 대기
-        yield return new WaitForSeconds(0.03f);
-        //yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(effectWaitTime);
 
         // 라인 렌더러를 비활성화하여 탄알 궤적을 지움
         bulletLineRenderer.enabled = false;
     }
 
     // 재장전 시도
-    public bool Reload() {
+    public bool Reload()
+    {
 
-        if(state == State.Reloading || ammoRemain <= 0 || magAmmo >= gunData.magCapacity)
+        if (state == State.Reloading || ammoRemain <= init || magAmmo >= gunData.magCapacity)
         {
             return false;
         }
@@ -151,7 +161,8 @@ public class Gun : MonoBehaviour {
     }
 
     // 실제 재장전 처리를 진행
-    private IEnumerator ReloadRoutine() {
+    private IEnumerator ReloadRoutine()
+    {
         // 현재 상태를 재장전 중 상태로 전환
         state = State.Reloading;
 

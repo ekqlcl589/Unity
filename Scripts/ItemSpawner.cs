@@ -5,24 +5,28 @@ using UnityEngine.AI;
 
 public class ItemSpawner : MonoBehaviour
 {
-    public GameObject[] items;
-    public Transform playerTransform;
+    [SerializeField] private GameObject[] items;
+    [SerializeField] private Transform playerTransform;
 
     private List<Item> itemList = new List<Item>();
 
-    public float maxDistance = 50f;
+    private float maxDistance = 50f;
 
-    public float timeBetSpawnMax = 7f; // 최대 시간 간격
-    public float timeBetSpawnMin = 2f; // 최소 시간 간격
+    private float timeBetSpawnMax = 7f; // 최대 시간 간격
+    private float timeBetSpawnMin = 2f; // 최소 시간 간격
     private float timeBetSpawn; // 생성 간격
 
     private float lastSpawnTime; // 마지막 생성 시점
+
+    private const int init = 0;
+
+    private const float destroyCount = 5f;
 
     // Start is called before the first frame update
     void Start()
     {
         timeBetSpawn = Random.Range(timeBetSpawnMin, timeBetSpawnMax);
-        lastSpawnTime = 0;
+        lastSpawnTime = init;
 
     }
 
@@ -36,8 +40,7 @@ public class ItemSpawner : MonoBehaviour
             // 생성 주기를 랜덤으로 변경
             timeBetSpawn = Random.Range(timeBetSpawnMin, timeBetSpawnMax);
             // 아이템 생성 실행
-            //if(itemList.Count <= 1)
-                Spawn();
+            Spawn();
         }
 
     }
@@ -51,12 +54,10 @@ public class ItemSpawner : MonoBehaviour
         //spawnPosition += Vector3.up * 0.86f;
 
         // 아이템 중 하나를 무작위로 골라 랜덤 위치에 생성
-        GameObject selectedItem = items[Random.Range(0, items.Length)];
+        GameObject selectedItem = items[Random.Range(init, items.Length)];
         GameObject item = Instantiate(selectedItem, spawnPosition, Quaternion.identity);
 
-        //itemList.Add(item);
-        // 생성된 아이템을 10초 뒤에 파괴
-        Destroy(item, 5f);
+        Destroy(item, destroyCount);
 
     }
 
