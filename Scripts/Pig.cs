@@ -5,25 +5,24 @@ using UnityEngine.AI;
 
 public class Pig : LivingEntity
 {
-    public LayerMask whatIsTarget;
+    [SerializeField] private LayerMask whatIsTarget;
     private LivingEntity targetEntity; // 추적 대상
 
     private Animator pigAnimator;
     private NavMeshAgent navMeshAgent;
 
-    public GameObject itemPrefab;
+    [SerializeField] private GameObject itemPrefab;
 
     public System.Action onDie;
 
-    public float speed = 1f;
-    public float waitTime = 3f;
+    private float speed = 1f;
 
     protected bool hasTarget
     {
         get
         {
             // 추적할 대상이 존재하고, 대상이 사망하지 않았다면 true
-            if (targetEntity != null && !targetEntity.dead)
+            if (targetEntity != null && !targetEntity.Dead)
             {
                 return true;
             }
@@ -43,7 +42,7 @@ public class Pig : LivingEntity
     void Start()
     {
         navMeshAgent.speed = speed;
-        health = 20f;
+        health = startAnimalHealth;
         StartCoroutine(UpdatePath());
     }
 
@@ -61,20 +60,16 @@ public class Pig : LivingEntity
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
         base.OnDamage(damage, hitPoint, hitNormal);
-        Debug.Log("sdfsd"+1234);
     }
     public override void Die()
     {
         base.Die();
 
-        //AnimalAnimator.SetFloat("Move", 0f);
         DropItem();
         Collider[] colliders = GetComponents<Collider>();
 
         for (int i = 0; i < colliders.Length; i++)
             colliders[i].enabled = false;
-
-        //AnimalAnimator.SetBool("Dead", true);
 
         navMeshAgent.isStopped = true;
         navMeshAgent.enabled = false;
@@ -86,25 +81,24 @@ public class Pig : LivingEntity
 
     public IEnumerator UpdatePath()
     {
-        while (!dead)
+        while (!Dead)
         {
             if (hasTarget)
             {
-                //float movePower = move[Random.Range(0, move.Length)];
-                pigAnimator.SetFloat("Move", 0.5f/*Random.Range(3, movePower)*/);
+                pigAnimator.SetFloat("Move", naveMeshSlowSpeed);
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
             }
             else
             {
-                Collider[] colliders = Physics.OverlapSphere(transform.position, 20f, whatIsTarget);
+                Collider[] colliders = Physics.OverlapSphere(transform.position, navMeshRange, whatIsTarget);
                 navMeshAgent.isStopped = true;
-                pigAnimator.SetFloat("Move", 0f);
+                pigAnimator.SetFloat("Move", naveMeshStopSpeed);
 
                 for (int i = 0; i < colliders.Length; i++)
                 {
                     LivingEntity live = colliders[i].GetComponent<LivingEntity>();
-                    if (live != null && !live.dead)
+                    if (live != null && !live.Dead)
                     {
                         targetEntity = live;
                         break;
@@ -112,7 +106,7 @@ public class Pig : LivingEntity
                 }
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(waitForSecond);
         }
     }
     public void DropItem()
@@ -124,7 +118,6 @@ public class Pig : LivingEntity
         this.onDie = () =>
         {
             go.SetActive(true);
-            //go.GetComponent<FiledItems>().GetItem();
             go.GetComponent<FiledItems>().SetItem(go.GetComponent<FiledItems>().GetItem());
         };
 

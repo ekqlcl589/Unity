@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class AnimalChicken : LivingEntity
 {
-    public LayerMask whatIsTarget;
+    [SerializeField] private LayerMask whatIsTarget;
     private LivingEntity targetEntity; // 추적 대상
 
     private NavMeshAgent navMeshAgent;
@@ -13,22 +13,21 @@ public class AnimalChicken : LivingEntity
     private Animator AnimalAnimator;
 
     private AudioSource chickenAudio;
-    public AudioClip DieSound;
+    [SerializeField] private AudioClip DieSound;
 
-    public GameObject itemPrefab;
+    [SerializeField] private GameObject itemPrefab;
 
     public System.Action onDie;
 
     private float speed = 1f;
 
-    private const chickenNavMeshRange = 10f;
-
     public bool hasTarget
+
     {
         get
         {
             // 추적할 대상이 존재하고, 대상이 사망하지 않았다면 true
-            if (targetEntity != null && !targetEntity.dead)
+            if (targetEntity != null && !targetEntity.Dead)
             {
                 return true;
             }
@@ -42,11 +41,11 @@ public class AnimalChicken : LivingEntity
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         AnimalAnimator = GetComponent<Animator>();
+        chickenAudio = GetComponent<AudioSource>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        chickenAudio = GetComponent<AudioSource>();
         navMeshAgent.speed = speed;
         health = startAnimalHealth;
         StartCoroutine(UpdatePath());
@@ -64,13 +63,13 @@ public class AnimalChicken : LivingEntity
     {
         base.OnDamage(damage, hitPoint, hitNormal);
     }
-
+    //
     public override void Die()
     {
         base.Die();
         chickenAudio.PlayOneShot(DieSound);
 
-        AnimalAnimator.SetFloat("Move", 0f);
+        AnimalAnimator.SetFloat("Move", naveMeshStopSpeed);
         DropItem();
         Collider[] colliders = GetComponents<Collider>();
 
@@ -88,24 +87,25 @@ public class AnimalChicken : LivingEntity
 
     public virtual IEnumerator UpdatePath()
     {
-        while (!dead)
+        while (!Dead)
         {
             if (hasTarget)
             {
+                //float movePower = move[Random.Range(0, move.Length)];
                 AnimalAnimator.SetFloat("Move", naveMeshSlowSpeed);
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
             }
             else
             { // 타겟이 없으면 Move 값 0 == Idle 상태로 대기 
-                Collider[] colliders = Physics.OverlapSphere(transform.position, chickenNavMeshRange, whatIsTarget);
+                Collider[] colliders = Physics.OverlapSphere(transform.position, navMeshRange, whatIsTarget);
                 navMeshAgent.isStopped = true;
                 AnimalAnimator.SetFloat("Move", naveMeshStopSpeed);
 
                 for (int i = 0; i < colliders.Length; i++)
                 {
                     LivingEntity live = colliders[i].GetComponent<LivingEntity>();
-                    if (live != null && !live.dead)
+                    if (live != null && !live.Dead)
                     {
                         targetEntity = live;
                         break;
@@ -126,7 +126,6 @@ public class AnimalChicken : LivingEntity
         this.onDie = () =>
         {
             go.SetActive(true);
-            
             go.GetComponent<FiledItems>().SetItem(go.GetComponent<FiledItems>().GetItem());
         };
 
@@ -134,7 +133,7 @@ public class AnimalChicken : LivingEntity
 
     public void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Grass")
+        if (collision.gameObject.tag == "Grass")
         {
             AnimalAnimator.SetFloat("Move", naveMeshStopSpeed);
             AnimalAnimator.SetTrigger("Eat");

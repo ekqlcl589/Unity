@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class AniamlBear : LivingEntity
 {
-    public LayerMask whatIsTarget;
+    [SerializeField] private LayerMask whatIsTarget;
     private LivingEntity targetEntity; // 추적 대상
 
     private NavMeshAgent navMeshAgent;
@@ -13,27 +13,31 @@ public class AniamlBear : LivingEntity
     private Animator AnimalAnimator;
 
     private AudioSource bearAudio;
-    public AudioClip dieSound;
-    public AudioClip angrySound;
+    [SerializeField] private AudioClip dieSound;
+    [SerializeField] private AudioClip angrySound;
 
-    public GameObject itemPrefab;
+    [SerializeField] private GameObject itemPrefab;
 
     public System.Action onDie;
 
     private float speed = 1f;
 
-    public float damage = 25f;
-    public float timeBetAttack = 1f;
+    private float damage = 25f;
+    private float timeBetAttack = 1f;
     private float lastAttackTime;
 
     private bool half = true;
+
+    private const float bearHp = 200f;
+    private const float bearPhase2Hp = 50f;
+    private const float bearPhase2Speed = 2.5f;
 
     public bool hasTarget
     {
         get
         {
             // 추적할 대상이 존재하고, 대상이 사망하지 않았다면 true
-            if (targetEntity != null && !targetEntity.dead)
+            if (targetEntity != null && !targetEntity.Dead)
             {
                 return true;
             }
@@ -53,7 +57,7 @@ public class AniamlBear : LivingEntity
     {
         bearAudio = GetComponent<AudioSource>();
         navMeshAgent.speed = speed;
-        health = 200f;
+        health = bearHp;
         StartCoroutine(UpdatePath());
     }
 
@@ -68,9 +72,8 @@ public class AniamlBear : LivingEntity
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
         base.OnDamage(damage, hitPoint, hitNormal);
-        //    Debug.Log("sdfsd");
     }
-    //
+
     public override void Die()
     {
         base.Die();
@@ -92,32 +95,32 @@ public class AniamlBear : LivingEntity
 
     public virtual IEnumerator UpdatePath()
     {
-        while (!dead)
+        while (!Dead)
         {
             if (hasTarget)
             {
-                AnimalAnimator.SetFloat("Move", 0.5f);
+                AnimalAnimator.SetFloat("Move", naveMeshSlowSpeed);
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
 
-                if(health <= 50 && half)
+                if (health <= bearPhase2Hp && half)
                 {
                     bearAudio.PlayOneShot(angrySound);
-                    AnimalAnimator.SetFloat("Move", 1f);
-                    navMeshAgent.speed = 2.5f;
+                    AnimalAnimator.SetFloat("Move", naveMeshDefaultSpeed);
+                    navMeshAgent.speed = bearPhase2Speed;
                     half = false;
                 }
             }
             else
             {
-                Collider[] colliders = Physics.OverlapSphere(transform.position, defaultAnimalNavMeshRange, whatIsTarget);
+                Collider[] colliders = Physics.OverlapSphere(transform.position, navMeshRange, whatIsTarget);
                 navMeshAgent.isStopped = true;
-                AnimalAnimator.SetFloat("Move", 0f);
+                AnimalAnimator.SetFloat("Move", naveMeshStopSpeed);
 
                 for (int i = 0; i < colliders.Length; i++)
                 {
                     LivingEntity live = colliders[i].GetComponent<LivingEntity>();
-                    if (live != null && !live.dead)
+                    if (live != null && !live.Dead)
                     {
                         targetEntity = live;
                         break;
@@ -138,7 +141,6 @@ public class AniamlBear : LivingEntity
         this.onDie = () =>
         {
             go.SetActive(true);
-            
             go.GetComponent<FiledItems>().SetItem(go.GetComponent<FiledItems>().GetItem());
         };
 
@@ -146,7 +148,7 @@ public class AniamlBear : LivingEntity
 
     private void OnTriggerStay(Collider other)
     {
-        if (!dead)
+        if (!Dead)
         {
             AnimalAnimator.SetTrigger("Attack");
             if (Time.time >= lastAttackTime + timeBetAttack)
