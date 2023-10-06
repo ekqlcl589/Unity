@@ -102,10 +102,10 @@ public class Inventory : MonoBehaviour
             playerAudioPlayer.PlayOneShot(pickUpClip);
             FiledItems filedItems = other.GetComponent<FiledItems>();
 
-            if (filedItems.GetItem().GetItemName() != "Coin" && filedItems.GetItem().GetItemName() != "치즈케이크")
+            if (filedItems.GetItem().ItemName != "Coin" && filedItems.GetItem().ItemName != "치즈케이크")
                 AddFoodCount();
 
-            if (filedItems.GetItem().GetItemName() == "치즈케이크")
+            if (filedItems.GetItem().ItemName == "치즈케이크")
             {
                 AchievementsManager.Instance.OnNotify(AchievementsManager.Achievements.specialFood,
                     special: specialFoodCount);

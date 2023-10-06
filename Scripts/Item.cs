@@ -17,31 +17,24 @@ public enum ItemType
 [System.Serializable]
 public class Item : IItem
 {
-    public ItemType GetItemType() { return type; }
-
-    public void SetItemType(ItemType _type) { type = _type; }
-
-    public string GetItemName() { return itemName; }
-
-    public void SetItemName(string _itemName) { itemName = _itemName; }
-
-    public Sprite GetItemSpriteImage() { return itemImage; }
-
-    public void SetItemSpriteImage(Sprite _itemImage) { itemImage = _itemImage; }
-
-    public StateUI GetStateUI() { return stateUI; }
-
-    public void SetStateUI(StateUI _stateUI) { stateUI = _stateUI; }
-
-    public String GetItemToolTip() { return itemToolTip; }
-
-    public void SetItemToolTip(string _itemToolTip) { itemToolTip = _itemToolTip; }
-
+    public ItemType ItemType { get { return type; } set { type = value; } }
 
     private ItemType type;
+
+    public string ItemName { get { return itemName; } set { itemName = value; } }
+
     private string itemName;
+
+    public Sprite ItemImage { get { return itemImage; } set { ItemImage = value; } }
+
     private Sprite itemImage;
+
+    public StateUI StateUI { get { return stateUI; } set { stateUI = value; } }
+
     private StateUI stateUI;
+
+    public string ItemToolTip { get { return itemToolTip; } set { itemToolTip = value; } }
+
     private string itemToolTip;
 
     private const int ammoRemain = 30;
@@ -75,7 +68,7 @@ public class Item : IItem
 
             if (playerHealth != null && !playerHealth.Dead)
             {
-                if (playerHealth.Hunger <= playerHealth.GetMaxHunger())
+                if (playerHealth.Hunger <= playerHealth.MaxHunger)
                     playerHealth.RestoreHunger(restore); // 배고픔도 채우면서 체력도 같이 회복 
 
                 playerHealth.RestoreHealth(restore);
@@ -87,7 +80,7 @@ public class Item : IItem
             PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
             if (playerHealth != null && !playerHealth.Dead)
             {
-                if (playerHealth.Hunger <= playerHealth.GetMaxHunger())
+                if (playerHealth.Hunger <= playerHealth.MaxHunger)
                     playerHealth.RestoreHunger(restore);
 
                 playerHealth.Diminish(restore);
@@ -99,7 +92,7 @@ public class Item : IItem
 
             if (playerHealth != null && !playerHealth.Dead)
             {
-                if (playerHealth.Hunger <= playerHealth.GetMaxHunger())
+                if (playerHealth.Hunger <= playerHealth.MaxHunger)
                     playerHealth.RestoreHunger(restore);
 
                 playerHealth.RestoreHealth(specialRestore);

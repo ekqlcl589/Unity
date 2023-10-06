@@ -21,7 +21,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler
     public void UpdateSlotUI()
     {
 
-        itemIcon.sprite = item.GetItemSpriteImage();
+        itemIcon.sprite = item.ItemImage;
         itemIcon.gameObject.SetActive(true);
     }
 

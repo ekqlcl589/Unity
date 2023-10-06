@@ -77,7 +77,7 @@ public class HealingPoint : MonoBehaviour, IItem
         // LivingEntity컴포넌트가 있다면
         if (life != null)
         {
-            if (life.Temperature >= life.GetMaxTemperature())
+            if (life.Temperature >= life.MaxTemperature)
                 return;
             // 체온 회복 실행
             life.RestoreTemperature(healing);

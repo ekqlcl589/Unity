@@ -16,6 +16,8 @@ public class CookingUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //slots = GetComponentsInChildren<Slot>();
+        //cookSlots = GetComponentsInChildren<CookingSlot>();
     }
 
     // Update is called once per frame
@@ -25,7 +27,7 @@ public class CookingUI : MonoBehaviour
         {
             for (int i = 0; i < slots.Length; i++)
             {
-                if (slots[i].GetItem().GetItemName() == "Steak")
+                if (slots[i].GetItem().ItemName == "Steak")
                 {
                     slots[i].SetItemData(item[0]);
                     slots[i].UpdateSlotUI();
@@ -46,7 +48,7 @@ public class CookingUI : MonoBehaviour
         {
             for (int i = 0; i < slots.Length; i++)
             {
-                if (slots[i].GetItem().GetItemName() == "생닭")
+                if (slots[i].GetItem().ItemName == "생닭")
                 {
                     slots[i].SetItemData(item[1]);
                     slots[i].UpdateSlotUI();
@@ -69,7 +71,7 @@ public class CookingUI : MonoBehaviour
         {
             for (int i = 0; i < slots.Length; i++)
             {
-                if (slots[i].GetItem().GetItemName() == "소세지")
+                if (slots[i].GetItem().ItemName == "소세지")
                 {
                     slots[i].SetItemData(item[2]);
                     slots[i].UpdateSlotUI();
@@ -86,7 +88,7 @@ public class CookingUI : MonoBehaviour
 
                 }
             }
-        }
+        } // 임시방편 switch나 다른 방법으로 편하게 구분할 수 있게 고쳐야함
     }
 
     void AddCookCount()

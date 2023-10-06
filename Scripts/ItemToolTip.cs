@@ -50,7 +50,7 @@ public class ItemToolTip : MonoBehaviour
 
     public void SetItemInfo(Item item)
     {
-        titleText.text = item.GetItemName();
-        contentText.text = item.GetItemToolTip();
+        titleText.text = item.ItemName;
+        contentText.text = item.ItemToolTip;
     }
 }

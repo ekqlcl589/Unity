@@ -5,16 +5,15 @@ using UnityEngine;
 // 체력, 데미지 받아들이기, 사망 기능, 사망 이벤트를 제공
 public class LivingEntity : MonoBehaviour, IDamageable
 {
-    public float GetMaxHealth() { return maxHealth; }
-
     protected const float maxHealth = 100f;
     protected float startingHealth = 100f; // 시작 체력
     protected const float startAnimalHealth = 20f;
     public float health { get; protected set; } // 현재 체력
 
-    public float GetMaxHunger() { return maxHunger; }
-
     protected const float maxHunger = 100f;
+
+    public float MaxHunger { get { return maxHunger; } private set { } }
+
     protected const float startingHunger = 100f;
     protected int dieHealth = 0;
 
@@ -25,7 +24,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
     public float Hunger { get; protected set; }
 
     protected float maxTemperature = 100f;
-    public float GetMaxTemperature() { return maxTemperature; }
+    public float MaxTemperature { get { return maxTemperature; } private set { } }
 
     protected const float minTemperature = 0f;
     protected const float startingTemperature = 100f;
@@ -40,6 +39,8 @@ public class LivingEntity : MonoBehaviour, IDamageable
     protected const float naveMeshSlowSpeed = 0.5f;
 
     protected const float waitForSecond = 0.5f;
+
+    protected float navMeshRange = 10f;
 
     public bool Dead { get; protected set; } // 사망 상태
 
