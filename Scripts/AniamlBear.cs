@@ -64,7 +64,7 @@ public class AniamlBear : LivingEntity
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance != null && GameManager.instance.isGameover)
+        if (GameManager.instance != null && GameManager.instance.IsGameover)
         {
             return;
         }

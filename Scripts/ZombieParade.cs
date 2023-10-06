@@ -35,16 +35,14 @@ public class ZombieParade : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.instance.Last && !GameManager.instance.isGameover && zombielist.Count <= startCount)
+        if (!GameManager.instance.Last && !GameManager.instance.IsGameover && zombielist.Count <= startCount)
         {
             Spawn();
         }
 
         if (cnt <= clearCount && !safe)
-        {
-            GameManager.instance.Clear = true;
             StartCoroutine(Cor_ShowSafeText5Sec());
-        }
+
     }
 
     private void Spawn()

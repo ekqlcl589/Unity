@@ -24,39 +24,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool isGameover { get; private set; } // 게임 오버 상태
+    public bool IsGameover { get; private set; } // 게임 오버 상태
 
 
     private static GameManager m_instance; // 싱글톤이 할당될 static 변수
 
     private int zombieCount = 0;
 
-    public int ZombieCount { get { return zombieCount; } set { zombieCount = value; } }
+    //public int ZombieCount{ get { return zombieCount; } set { zombieCount = value; } }
+    public int ZombieCount { get { return zombieCount; } private set { } }
 
     private int dayCount = 0;
 
     private int weaponNum = 0;
 
-    public int WeaponNum { get { return weaponNum; } set { weaponNum = value; } }
+    private const int weaponCount = 0;
+    private const int weaponCount1 = 1;
+    public int WeaponNum { get { return weaponNum; } private set { weaponNum = value; } }
 
     private bool isNight = false;
 
     public bool IsNight { get { return isNight; } set { isNight = value; } }
 
-    private bool isInput = true;
-    public bool IsInput { get { return isInput; } set { isInput = value; } }
+    private bool last = true;
 
-    private bool last = false;
-
-    public bool Last { get { return last; } set { last = value; } }
-
-    private bool clear = false;
-
-    public bool Clear { get { return clear; } set { clear = value; } }
+    public bool Last { get { return last; } private set { } }
 
     private bool safeHouse = false;
 
-    public bool SafeHouse { get { return safeHouse; } set { safeHouse = value; } }
+    public bool SafeHouse { get { return safeHouse; } private set { } }
 
     private void Awake()
     {
@@ -77,7 +73,7 @@ public class GameManager : MonoBehaviour
 
     public void AddDayCount(int newDayCount)
     {
-        if (!isGameover)
+        if (!IsGameover)
         {
             dayCount += newDayCount;
 
@@ -94,7 +90,7 @@ public class GameManager : MonoBehaviour
     }
     public void AddZombieCount(int newCount)
     {
-        if (!isGameover)
+        if (!IsGameover)
         {
             zombieCount += newCount;
 
@@ -102,11 +98,34 @@ public class GameManager : MonoBehaviour
             UIManager.instance.UpdateKillText(zombieCount);
         }
     }
+
+    public void WeaponNumChange(bool change)
+    {
+        if (change)
+            WeaponNum = weaponCount;
+        else
+            WeaponNum = weaponCount1;
+    }
+
+    public void Safe()
+    {
+        safeHouse = true;
+    }
+
+    public void LastCheck(bool check)
+    {
+        last = false;
+    }
+
+    public void NightCheck(bool check)
+    {
+        isNight = check;
+    }
     // 게임 오버 처리
     public void EndGame()
     {
         // 게임 오버 상태를 참으로 변경
-        isGameover = true;
+        IsGameover = true;
         // 게임 오버 UI를 활성화
         UIManager.instance.SetActiveGameoverUI(true);
 
@@ -114,7 +133,7 @@ public class GameManager : MonoBehaviour
     public void ReGame()
     {
         Destroy(gameObject);
-        isGameover = false;
+        IsGameover = false;
         UIManager.instance.SetActiveGameoverUI(false);
     }
 }

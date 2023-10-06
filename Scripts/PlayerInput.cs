@@ -35,7 +35,7 @@ public class PlayerInput : MonoBehaviour
     private void Update()
     {
         // 게임오버 상태에서는 사용자 입력을 감지하지 않는다
-        if (GameManager.instance != null && GameManager.instance.isGameover)
+        if (GameManager.instance != null && GameManager.instance.IsGameover)
         {
             move = initPoint;
 

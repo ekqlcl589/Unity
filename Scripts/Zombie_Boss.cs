@@ -71,7 +71,7 @@ public class Zombie_Boss : LivingEntity
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance != null && GameManager.instance.isGameover)
+        if (GameManager.instance != null && GameManager.instance.IsGameover)
         {
             return;
         }
@@ -200,7 +200,7 @@ public class Zombie_Boss : LivingEntity
         UIManager.instance.ZombieParade(true);
         yield return new WaitForSeconds(paradeWaitTime);
         UIManager.instance.ZombieParade(false);
-        GameManager.instance.Last = false;
+        GameManager.instance.LastCheck(false);
 
     }
 }

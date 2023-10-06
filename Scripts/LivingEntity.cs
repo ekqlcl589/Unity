@@ -12,7 +12,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
 
     protected const float maxHunger = 100f;
 
-    public float MaxHunger { get { return maxHunger; } private set { } }
+    public float MaxHunger { get { return maxHunger; } private set; }
 
     protected const float startingHunger = 100f;
     protected int dieHealth = 0;
@@ -24,7 +24,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
     public float Hunger { get; protected set; }
 
     protected float maxTemperature = 100f;
-    public float MaxTemperature { get { return maxTemperature; } private set { } }
+    public float MaxTemperature { get { return maxTemperature; } private set; }
 
     protected const float minTemperature = 0f;
     protected const float startingTemperature = 100f;
