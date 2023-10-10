@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
-    [SerializeField] private GameObject camera;
+    public GameObject camera;
 
     private void OnTriggerEnter(Collider other)
     {

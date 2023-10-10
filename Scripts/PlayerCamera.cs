@@ -7,8 +7,8 @@ public class PlayerCamera : MonoBehaviour
 {
     private static PlayerCamera instance;
 
-    [SerializeField] private GameObject tPlayer;
-    [SerializeField] private Transform tFollowTarget;
+    private GameObject tPlayer;
+    private Transform tFollowTarget;
     private CinemachineVirtualCamera vcam;
 
     public static PlayerCamera Instance
@@ -21,6 +21,7 @@ public class PlayerCamera : MonoBehaviour
             }
             return instance;
         }
+        private set { }
     }
     private void Awake()
     {
@@ -41,15 +42,7 @@ public class PlayerCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tPlayer == null)
-        {
-            tPlayer = GameObject.FindWithTag("Player");
-            if (tPlayer != null)
-            {
-                tFollowTarget = tPlayer.transform;
-                vcam.Follow = tFollowTarget;
-            }
-        }
+        CheckPlayer();
     }
 
     private void LateUpdate()
@@ -67,5 +60,19 @@ public class PlayerCamera : MonoBehaviour
 
             }
         }
+    }
+
+    public void CheckPlayer()
+    {
+        if (tPlayer == null)
+        {
+            tPlayer = GameObject.FindWithTag("Player");
+            if (tPlayer != null)
+            {
+                tFollowTarget = tPlayer.transform;
+                vcam.Follow = tFollowTarget;
+            }
+        }
+
     }
 }

@@ -13,31 +13,27 @@ public class GunSpecial : MonoBehaviour
 
     public State state { get; private set; } // 현재 총의 상태
 
-    [SerializeField] private Transform fireTransform; // 탄알이 발사될 위치
+    public Transform fireTransform; // 탄알이 발사될 위치
 
-    [SerializeField] private ParticleSystem muzzleFlashEffect; // 총구 화염 효과
-    [SerializeField] private ParticleSystem shellEjectEffect; // 탄피 배출 효과
+    public ParticleSystem muzzleFlashEffect; // 총구 화염 효과
+    public ParticleSystem shellEjectEffect; // 탄피 배출 효과
 
-    [SerializeField] private GunData gunData; // 총의 현재 데이터
+    public GunData gunData; // 총의 현재 데이터
 
     private LineRenderer bulletLineRenderer; // 탄알 궤적을 그리기 위한 렌더러
 
     private AudioSource gunAudioPlayer; // 총 소리 재생기
 
-    private float fireDistance = 50f; // 사정거리
+    private const float fireDistance = 50f; // 사정거리
 
     private int ammoRemain = 100;
     private int magAmmo;
-    public int GetAmmo() { return magAmmo; }
-
-    public int GetAmmoRemain() { return ammoRemain; }
-    public void SetAmmoRemain(int remain) { ammoRemain += remain; }
 
     private float lastFireTime; // 총을 마지막으로 발사한 시점
 
-    private int lineRendererPosition = 2;
+    private const int lineRendererPosition = 2;
 
-    private float effectWaitTime = 0.03f;
+    private const float effectWaitTime = 0.03f;
 
     private const int init = 0;
 

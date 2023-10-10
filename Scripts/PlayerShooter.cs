@@ -8,40 +8,42 @@ public class PlayerShooter : MonoBehaviour
 
     public Gun GetGunData() { return gun; }
 
-    [SerializeField] private Gun gun; // 사용할 총
-    [SerializeField] private Gun gunSpecial;
-    [SerializeField] private Transform gunPivot; // 총 배치의 기준점
+    public Gun gun; // 사용할 총
+    public Gun gunSpecial;
+    public Transform gunPivot; // 총 배치의 기준점
                                                  // public Transform leftHandMount; // 총의 왼쪽 손잡이, 왼손이 위치할 지점
                                                  // public Transform rightHandMount; // 총의 오른쪽 손잡이, 오른손이 위치할 지점
 
     private PlayerInput playerInput; // 플레이어의 입력
     private Animator playerAnimator; // 애니메이터 컴포넌트
 
-    private void Start()
+    private void Awake()
     {
-        // 사용할 컴포넌트들을 가져오기
         playerInput = GetComponent<PlayerInput>();
         playerAnimator = GetComponent<Animator>();
+    }
+    private void Start()
+    {
 
     }
 
     private void OnEnable()
     {
         // 슈터가 활성화될 때 총도 함께 활성화
-        // gun.gameObject.SetActive(true);
+         gun.gameObject.SetActive(true);
     }
 
     private void OnDisable()
     {
         // 슈터가 비활성화될 때 총도 함께 비활성화
-        // gun.gameObject.SetActive(false);
+         gun.gameObject.SetActive(false);
     }
     private void Update()
     {
         // 입력을 감지하고 총 발사하거나 재장전
         if (playerInput.fire)
         {
-            /*
+            
 #if UNITY_EDITOR
             if (EventSystem.current.IsPointerOverGameObject() == true)
                 return;
@@ -64,7 +66,7 @@ public class PlayerShooter : MonoBehaviour
             }
 
 #endif
-*/
+
             if (EventSystem.current.IsPointerOverGameObject() == true)
                 return;
             else

@@ -9,7 +9,7 @@ public class LoadingSceneController : MonoBehaviour
     static string nextScene;
 
 
-    [SerializeField] private Image progressBar;
+    public Image progressBar;
 
     private const float loadingWaitTime = 0.01f;
 

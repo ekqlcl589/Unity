@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SpawnEffect : MonoBehaviour
 {
-    [SerializeField] private Renderer _renderer;
-    [SerializeField] private Material mtrlOrg;
-    [SerializeField] private Material mtrlPhase;
-    [SerializeField] private float phaseTime = 2f;
+    public Renderer _renderer;
+    public Material mtrlOrg;
+    public Material mtrlPhase;
+    public float phaseTime = 2f;
 
     private const int phaseStart = 0;
     private const int phaseEnd = 17;

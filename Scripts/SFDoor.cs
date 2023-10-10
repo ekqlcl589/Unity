@@ -7,7 +7,7 @@ public class SFDoor : MonoBehaviour
 {
     private bool active = false;
 
-    [SerializeField] private GameObject door;
+    public GameObject door;
 
     private const int buildIndex = 1;
     // Start is called before the first frame update

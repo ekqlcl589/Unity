@@ -25,6 +25,8 @@ public class CookingSlot : MonoBehaviour, IPointerUpHandler
         get => isCookOk;
         set
         {
+            if(isCooking == value) return;
+
             isCookOk = value;
         }
     }
@@ -37,8 +39,7 @@ public class CookingSlot : MonoBehaviour, IPointerUpHandler
     // Update is called once per frame
     void Update()
     {
-        if (isCooking)
-            Cooking();
+        CheckCooking();
 
     }
 
@@ -128,5 +129,12 @@ public class CookingSlot : MonoBehaviour, IPointerUpHandler
             isCookOk = true;
             isCooking = false;
         }
+    }
+
+    public void CheckCooking()
+    {
+        if (isCooking)
+            Cooking();
+
     }
 }

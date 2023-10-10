@@ -4,10 +4,10 @@ using UnityEngine;
 // 좀비 게임 오브젝트를 주기적으로 생성
 public class ZombieSpawner : MonoBehaviour
 {
-    [SerializeField] private Zombie_Dissolve zombiePrefab; // 생성할 좀비 원본 프리팹
+    public Zombie_Dissolve zombiePrefab; // 생성할 좀비 원본 프리팹
 
-    [SerializeField] private ZombieData[] zombieDatas; // 사용할 좀비 셋업 데이터들
-    [SerializeField] private Transform[] spawnPoints; // 좀비 AI를 소환할 위치들
+    public ZombieData[] zombieDatas; // 사용할 좀비 셋업 데이터들
+    public Transform[] spawnPoints; // 좀비 AI를 소환할 위치들
 
     private List<Zombie_Dissolve> zombies = new List<Zombie_Dissolve>(); // 생성된 좀비들을 담는 리스트
 
@@ -82,7 +82,7 @@ public class ZombieSpawner : MonoBehaviour
         zombie.onDeath += () => zombies.Remove(zombie); // 람다식 이용 (입력) => 내용
         // 사망한 좀비는 5초 뒤에 파괴
         zombie.onDeath += () => Destroy(zombie.gameObject, destroyCount);
-
+        // 좀비 사망 후 킬 포인트 증가
         zombie.onDeath += () => AddKillPoint();
     }
 

@@ -6,10 +6,10 @@ using UnityEngine.Audio;
 
 public class SoundOption : MonoBehaviour
 {
-    [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private Slider bgmSlider;
-    [SerializeField] private Slider sfxSlider;
-    [SerializeField] private GameObject soundPanel;
+    public AudioMixer audioMixer;
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+    public GameObject soundPanel;
     private bool active = false;
 
     private float amplification = 20f;
