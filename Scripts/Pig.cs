@@ -5,13 +5,13 @@ using UnityEngine.AI;
 
 public class Pig : LivingEntity
 {
-    [SerializeField] private LayerMask whatIsTarget;
+    public LayerMask whatIsTarget;
     private LivingEntity targetEntity; // 추적 대상
 
     private Animator pigAnimator;
     private NavMeshAgent navMeshAgent;
 
-    [SerializeField] private GameObject itemPrefab;
+    public GameObject itemPrefab;
 
     public System.Action onDie;
 
@@ -65,11 +65,14 @@ public class Pig : LivingEntity
     {
         base.Die();
 
+        //AnimalAnimator.SetFloat("Move", 0f);
         DropItem();
         Collider[] colliders = GetComponents<Collider>();
 
         for (int i = 0; i < colliders.Length; i++)
             colliders[i].enabled = false;
+
+        //AnimalAnimator.SetBool("Dead", true);
 
         navMeshAgent.isStopped = true;
         navMeshAgent.enabled = false;
@@ -85,6 +88,7 @@ public class Pig : LivingEntity
         {
             if (hasTarget)
             {
+                //float movePower = move[Random.Range(0, move.Length)];
                 pigAnimator.SetFloat("Move", naveMeshSlowSpeed);
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
@@ -118,7 +122,8 @@ public class Pig : LivingEntity
         this.onDie = () =>
         {
             go.SetActive(true);
-            go.GetComponent<FiledItems>().SetItem(go.GetComponent<FiledItems>().GetItem());
+            //go.GetComponent<FiledItems>().GetItem();
+            go.GetComponent<FiledItems>().SetItemDataSwap(go.GetComponent<FiledItems>().GetItem());
         };
 
     }

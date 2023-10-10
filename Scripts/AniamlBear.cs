@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class AniamlBear : LivingEntity
 {
-    [SerializeField] private LayerMask whatIsTarget;
+    public LayerMask whatIsTarget;
     private LivingEntity targetEntity; // 추적 대상
 
     private NavMeshAgent navMeshAgent;
@@ -13,10 +13,10 @@ public class AniamlBear : LivingEntity
     private Animator AnimalAnimator;
 
     private AudioSource bearAudio;
-    [SerializeField] private AudioClip dieSound;
-    [SerializeField] private AudioClip angrySound;
+    public AudioClip dieSound;
+    public AudioClip angrySound;
 
-    [SerializeField] private GameObject itemPrefab;
+    public GameObject itemPrefab;
 
     public System.Action onDie;
 
@@ -72,8 +72,9 @@ public class AniamlBear : LivingEntity
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
         base.OnDamage(damage, hitPoint, hitNormal);
+        //    Debug.Log("sdfsd");
     }
-
+    //
     public override void Die()
     {
         base.Die();
@@ -141,7 +142,8 @@ public class AniamlBear : LivingEntity
         this.onDie = () =>
         {
             go.SetActive(true);
-            go.GetComponent<FiledItems>().SetItem(go.GetComponent<FiledItems>().GetItem());
+            //go.GetComponent<FiledItems>().GetItem();
+            go.GetComponent<FiledItems>().SetItemDataSwap(go.GetComponent<FiledItems>().GetItem());
         };
 
     }

@@ -12,7 +12,7 @@ public class SafeHouse : MonoBehaviour
             AchievementsManager.Instance.OnNotify(AchievementsManager.Achievements.safeHouse,
                 safeHouse: safePoint);
 
-            GameManager.instance.SafeHouse = true;
+            GameManager.instance.SetSafeHouseData();
 
             UIManager.instance.GetKillText().text = "생존 성공";
         }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class AnimalSpawner : MonoBehaviour
 {
-    [SerializeField] private Animal animalPrefabs; // 배열로 여러개 만들어서 생성 하는거 생각
-    [SerializeField] private AnimalChicken animalPrefabs1; // 배열로 여러개 만들어서 생성 하는거 생각
+    public Animal animalPrefabs; // 배열로 여러개 만들어서 생성 하는거 생각
+    public AnimalChicken animalPrefabs1; // 배열로 여러개 만들어서 생성 하는거 생각
 
-    [SerializeField] private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
 
 
     private List<Animal> animals = new List<Animal>();
@@ -17,8 +17,8 @@ public class AnimalSpawner : MonoBehaviour
 
     private const int zeroPoint = 0;
 
-    private int createNum = 2;
-    private int createNum1 = 4;
+    private const int createNum = 2;
+    private const int createNum1 = 4;
     // Start is called before the first frame update
     void Start()
     {

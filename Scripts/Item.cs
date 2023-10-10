@@ -17,23 +17,19 @@ public enum ItemType
 [System.Serializable]
 public class Item : IItem
 {
-    public ItemType ItemType { get { return type; } private set { type = value; } }
-
     private ItemType type;
 
-    public string ItemName { get { return itemName; } private set { itemName = value; } }
+    public string ItemName { get { return itemName; } private set { } }
 
     private string itemName;
 
-    public Sprite ItemImage { get { return itemImage; } private set { ItemImage = value; } }
+    public Sprite ItemImage { get { return itemImage; } private set { } }
 
     private Sprite itemImage;
 
-    public StateUI StateUI { get { return stateUI; } private set { stateUI = value; } }
-
     private StateUI stateUI;
 
-    public string ItemToolTip { get { return itemToolTip; } private set { itemToolTip = value; } }
+    public string ItemToolTip { get { return itemToolTip; } private set { } }
 
     private string itemToolTip;
 
@@ -42,7 +38,7 @@ public class Item : IItem
     private const int restore = 30;
     private const int specialRestore = 50;
 
-    public void Swap(Item item)
+    public void ItemDataSwap(Item item)
     {
         type = item.type;
         itemName = item.itemName;
@@ -66,7 +62,7 @@ public class Item : IItem
             PlayerShooter playerShooter = target.GetComponent<PlayerShooter>();
 
             if (playerShooter != null && playerShooter.GetGunData() != null)
-                playerShooter.GetGunData().AmmoRemain = ammoRemain;
+                playerShooter.GetGunData().SetAddAmmo(ammoRemain);
 
         }
 

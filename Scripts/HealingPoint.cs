@@ -8,8 +8,8 @@ public class HealingPoint : MonoBehaviour, IItem
 
     private LivingEntity targetEntiry;
 
-    [SerializeField] private float healing = 7f; // x 체온
-    [SerializeField] private float timeBetHeal = 1f; // 체력 회복 간격
+    private const float healing = 7f; // x 체온
+    private const float timeBetHeal = 1f; // 체력 회복 간격
 
     private const float navMeshRange = 5f;
     private float lastHealTime; // 마지막 체력 회복 시점

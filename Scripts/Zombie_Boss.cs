@@ -191,16 +191,12 @@ public class Zombie_Boss : LivingEntity
 
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-    }
-
     IEnumerator cor_ShowZombieParade()
     {
         UIManager.instance.ZombieParade(true);
         yield return new WaitForSeconds(paradeWaitTime);
         UIManager.instance.ZombieParade(false);
-        GameManager.instance.LastCheck(false);
+        GameManager.instance.LastCheckData();
 
     }
 }

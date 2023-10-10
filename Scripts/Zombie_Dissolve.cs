@@ -5,27 +5,27 @@ using UnityEngine.AI; // AI, 내비게이션 시스템 관련 코드 가져오기
 // 좀비 AI 구현
 public class Zombie_Dissolve : LivingEntity
 {
-    [SerializeField] private Renderer _renderer;
-    [SerializeField] private Material mtrlOrg;
-    [SerializeField] private Material mtrlDissolve;
-    [SerializeField] private float dissolveTime = 2f;
+    public Renderer _renderer;
+    public Material mtrlOrg;
+    public Material mtrlDissolve;
+    private float dissolveTime = 2f;
 
-    [SerializeField] private LayerMask whatIsTarget; // 추적 대상 레이어
+    public LayerMask whatIsTarget; // 추적 대상 레이어
 
     private LivingEntity targetEntity; // 추적 대상
     private NavMeshAgent navMeshAgent; // 경로 계산 AI 에이전트
 
-    [SerializeField] private ParticleSystem hitEffect; // 피격 시 재생할 파티클 효과
-    [SerializeField] private ParticleSystem sunHitEffect;
-    [SerializeField] private AudioClip deathSound; // 사망 시 재생할 소리
-    [SerializeField] private AudioClip hitSound; // 피격 시 재생할 소리
-    [SerializeField] private AudioClip sunHitSound;
+    public ParticleSystem hitEffect; // 피격 시 재생할 파티클 효과
+    public ParticleSystem sunHitEffect;
+    public AudioClip deathSound; // 사망 시 재생할 소리
+    public AudioClip hitSound; // 피격 시 재생할 소리
+    public AudioClip sunHitSound;
 
     private Animator zombieAnimator; // 애니메이터 컴포넌트
     private AudioSource zombieAudioPlayer; // 오디오 소스 컴포넌트
     private Renderer zombieRenderer; // 렌더러 컴포넌트
 
-    [SerializeField] private GameObject itemPrefab;
+    public GameObject itemPrefab;
     public System.Action onDie;
 
     private float damage; // 공격력
@@ -218,7 +218,7 @@ public class Zombie_Dissolve : LivingEntity
             //AddKillPoint();
             go.SetActive(true);
             //go.GetComponent<FiledItems>().GetItem();
-            go.GetComponent<FiledItems>().SetItem(go.GetComponent<FiledItems>().GetItem());
+            go.GetComponent<FiledItems>().SetItemDataSwap(go.GetComponent<FiledItems>().GetItem());
         };
     }
 

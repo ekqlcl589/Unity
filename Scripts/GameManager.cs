@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
 
     private int zombieCount = 0;
 
-    //public int ZombieCount{ get { return zombieCount; } set { zombieCount = value; } }
     public int ZombieCount { get { return zombieCount; } private set { } }
 
     private int dayCount = 0;
@@ -40,11 +39,11 @@ public class GameManager : MonoBehaviour
 
     private const int weaponCount = 0;
     private const int weaponCount1 = 1;
-    public int WeaponNum { get { return weaponNum; } private set { weaponNum = value; } }
+    public int WeaponNum { get { return weaponNum; } private set { } }
 
     private bool isNight = false;
 
-    public bool IsNight { get { return isNight; } set { isNight = value; } }
+    public bool IsNight { get { return isNight; } private set { } }
 
     private bool last = true;
 
@@ -107,17 +106,17 @@ public class GameManager : MonoBehaviour
             WeaponNum = weaponCount1;
     }
 
-    public void Safe()
+    public void SetSafeHouseData()
     {
         safeHouse = true;
     }
 
-    public void LastCheck(bool check)
+    public void LastCheckData()
     {
         last = false;
     }
 
-    public void NightCheck(bool check)
+    public void NightCheckData(bool check)
     {
         isNight = check;
     }

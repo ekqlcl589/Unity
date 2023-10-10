@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class FiledItems : MonoBehaviour
 {
-    [SerializeField] private Item item;
+    public Item item;
 
-    public void SetItem(Item _item)
+    public void SetItemDataSwap(Item _item)
     {
-        item.Swap(_item);
-        //item.ItemName = _item.ItemName;
-        //item.ItemImage = _item.ItemImage;
-        //item.ItemType = _item.ItemType;
-        //item.ItemToolTip = _item.ItemToolTip;
+        item.ItemDataSwap(_item);
     }
 
     public Item GetItem()
