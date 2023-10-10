@@ -3,22 +3,25 @@
 // 플레이어 캐릭터를 사용자 입력에 따라 움직이는 스크립트
 public class PlayerMovement : MonoBehaviour
 {
-    private float moveSpeed = 5f; // 앞뒤 움직임의 속도
-    private float rotateSpeed = 180f; // 좌우 회전 속도
-    private float jumpForce = 700f; // 점프 힘
+    private const float moveSpeed = 5f; // 앞뒤 움직임의 속도
+    private const float rotateSpeed = 180f; // 좌우 회전 속도
+    private const float jumpForce = 700f; // 점프 힘
 
     private PlayerInput playerInput; // 플레이어 입력을 알려주는 컴포넌트
     private Rigidbody playerRigidbody; // 플레이어 캐릭터의 리지드바디
     private Animator playerAnimator; // 플레이어 캐릭터의 애니메이터
 
-    private float point = 0f;
+    private const float point = 0f;
 
-    private void Start()
+    private void Awake()
     {
         // 사용할 컴포넌트들의 참조를 가져오기
         playerInput = GetComponent<PlayerInput>();
         playerRigidbody = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
+    }
+    private void Start()
+    {
     }
 
     // FixedUpdate는 물리 갱신 주기에 맞춰 실행됨

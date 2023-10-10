@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SpriteText : MonoBehaviour
 {
-    [SerializeField] private float time;
+    public float time;
 
     private const float num1 = 1f;
 

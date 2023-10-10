@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
 
             return m_instance;
         }
+        private set { }
     }
 
     private static UIManager m_instance; // 싱글톤이 할당될 변수

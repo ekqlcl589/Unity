@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
             // 싱글톤 오브젝트를 반환
             return m_instance;
         }
+        private set { }
     }
 
     public bool IsGameover { get; private set; } // 게임 오버 상태
