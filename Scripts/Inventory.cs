@@ -17,11 +17,12 @@ public class Inventory : MonoBehaviour
             }
             return m_instance;
         }
+        private set { }
     }
 
-    [SerializeField] private AudioClip pickUpClip;
+    public AudioClip pickUpClip;
 
-    private int foodCnt = 0;
+    private const int foodCnt = 0;
     private AudioSource playerAudioPlayer;
 
     private const int inventorySlotNum = 16;

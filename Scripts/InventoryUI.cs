@@ -6,13 +6,13 @@ using UnityEngine.EventSystems;
 
 public class InventoryUI : MonoBehaviour
 {
-    Inventory inventory;
-    [SerializeField] private GameObject inventoryPanel;
+    private Inventory inventory;
+    public GameObject inventoryPanel;
 
     private bool active = false;
 
-    [SerializeField] private Slot[] slots;
-    [SerializeField] private Transform slotHolder;
+    public Slot[] slots;
+    public Transform slotHolder;
 
     private const float destroyCount = 5f;
     private void Awake()
@@ -34,7 +34,7 @@ public class InventoryUI : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            slots[i].SetSlotNum(i);
+            slots[i].InitializeSlotNum(i);
             if (i < inventory.SlotCnt)
                 slots[i].GetComponent<Button>().interactable = true;
             else
@@ -44,13 +44,9 @@ public class InventoryUI : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            active = !active;
-            inventoryPanel.SetActive(active);
-        }
+        ActivePanel();
 
-        if (GameManager.instance.isGameover)
+        if (GameManager.instance.IsGameover)
             Destroy(gameObject, destroyCount);
     }
 
@@ -69,8 +65,18 @@ public class InventoryUI : MonoBehaviour
         }
         for (int i = 0; i < inventory.items.Count; i++)
         {
-            slots[i].SetItemData(inventory.items[i]);
+            slots[i].SetChangeItemData(inventory.items[i]);
             slots[i].UpdateSlotUI();
         }
+    }
+
+    public void ActivePanel()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            active = !active;
+            inventoryPanel.SetActive(active);
+        }
+
     }
 }

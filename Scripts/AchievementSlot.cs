@@ -7,13 +7,39 @@ using UnityEngine.UI;
 public class AchievementSlot : MonoBehaviour
 {
     private int slotnum;
-    public int SlotNum { get { return slotnum; } set { slotnum = value; } }
+    public int SlotNum
+    {
+        get
+        {
+            return slotnum;
+        }
+        set
+        {
+            if (slotnum == value)
+                return;
 
-    [SerializeField] private Text achivementText;
+            slotnum = value;
+        }
+    }
 
-    public AchievementsManager.Achievements ach;
+    public Text achivementText;
 
-    public AchievementsManager.Achievements Ach { get { return ach; } set { ach = value; } }
+    private AchievementsManager.Achievements ach;
+
+    public AchievementsManager.Achievements Ach
+    {
+        get
+        {
+            return ach;
+        }
+        set
+        {
+            if (ach == value)
+                return;
+
+            ach = value;
+        }
+    }
 
     public void UpdateSlotUI()
     {

@@ -16,10 +16,11 @@ public class Cook : MonoBehaviour
 
             return m_instance;
         }
+        private set { }
     }
     public static Cook m_instance;
 
-    [SerializeField] private GameObject cookPanel;
+    public GameObject cookPanel;
 
     private bool active = false;
 
@@ -40,11 +41,15 @@ public class Cook : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))// && isCooking)
+        ActivePanel();
+    }
+
+    public void ActivePanel()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
         {
             active = !active;
             cookPanel.SetActive(active);
         }
-
     }
 }

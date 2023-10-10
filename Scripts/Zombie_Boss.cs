@@ -5,15 +5,13 @@ using UnityEngine.AI;
 
 public class Zombie_Boss : LivingEntity
 {
-    [SerializeField] private LayerMask whatIsTarget; // 추적 대상 레이어
+    public LayerMask whatIsTarget; // 추적 대상 레이어
 
-    [SerializeField] private GameObject itemPrefab;
+    public ParticleSystem hitEffect; // 피격 시 재생할 파티클 효과
 
-    [SerializeField] private ParticleSystem hitEffect; // 피격 시 재생할 파티클 효과
-
-    [SerializeField] private AudioClip deathSound; // 사망 시 재생할 소리
-    [SerializeField] private AudioClip hitSound; // 피격 시 재생할 소리
-    [SerializeField] private AudioClip angrySound; // 체력이 일정 수치 이하로 내려갈 시 재생할 사운드 
+    public AudioClip deathSound; // 사망 시 재생할 소리
+    public AudioClip hitSound; // 피격 시 재생할 소리
+    public AudioClip angrySound; // 체력이 일정 수치 이하로 내려갈 시 재생할 사운드 
 
     private LivingEntity targetEntity; // 추적 대상
     private NavMeshAgent navMeshAgent; // 경로 계산 AI 에이전트
@@ -191,11 +189,15 @@ public class Zombie_Boss : LivingEntity
 
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+    }
+
     IEnumerator cor_ShowZombieParade()
     {
-        UIManager.instance.ZombieParade(true);
+        UIManager.instance.ActivZombieParade(true);
         yield return new WaitForSeconds(paradeWaitTime);
-        UIManager.instance.ZombieParade(false);
+        UIManager.instance.ActivZombieParade(false);
         GameManager.instance.LastCheckData();
 
     }

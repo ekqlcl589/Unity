@@ -6,12 +6,12 @@ using UnityEngine.EventSystems;
 
 public class CookingUI : MonoBehaviour
 {
-    [SerializeField] private Slot[] slots;
-    [SerializeField] private CookingSlot[] cookSlots;
+    public Slot[] slots;
+    public CookingSlot[] cookSlots;
 
-    [SerializeField] private Item[] item;
+    public Item[] item;
 
-    private int cookCnt = 0;
+    private int cookCnt;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +29,7 @@ public class CookingUI : MonoBehaviour
             {
                 if (slots[i].GetItem().ItemName == "Steak")
                 {
-                    slots[i].SetItemData(item[0]);
+                    slots[i].SetChangeItemData(item[0]);
                     slots[i].UpdateSlotUI();
                     cookSlots[0].IsCooking = false;
                     AddCookCount();
@@ -50,7 +50,7 @@ public class CookingUI : MonoBehaviour
             {
                 if (slots[i].GetItem().ItemName == "»ý´ß")
                 {
-                    slots[i].SetItemData(item[1]);
+                    slots[i].SetChangeItemData(item[1]);
                     slots[i].UpdateSlotUI();
                     cookSlots[1].IsCooking = false;
                     AddCookCount();
@@ -73,7 +73,7 @@ public class CookingUI : MonoBehaviour
             {
                 if (slots[i].GetItem().ItemName == "¼Ò¼¼Áö")
                 {
-                    slots[i].SetItemData(item[2]);
+                    slots[i].SetChangeItemData(item[2]);
                     slots[i].UpdateSlotUI();
                     cookSlots[2].IsCooking = false;
                     AddCookCount();

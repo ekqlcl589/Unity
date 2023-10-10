@@ -5,14 +5,16 @@ using UnityEngine.AI;
 
 public class ZombieParade : MonoBehaviour
 {
-    [SerializeField] private Zombie_Dissolve[] zombies;
-    [SerializeField] private Transform playerTransform;
+    public Zombie_Dissolve[] zombies;
+    public Transform playerTransform;
 
     private List<Zombie_Dissolve> zombielist = new List<Zombie_Dissolve>();
 
-    private float distance = 20f;
+    private const float distance = 20f;
 
-    private int cnt = 50;
+    private const int cnt = 50;
+
+    private int zombieCount;
 
     private bool safe = false;
 
@@ -29,7 +31,7 @@ public class ZombieParade : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        zombieCount = cnt;
     }
 
     // Update is called once per frame
@@ -40,7 +42,7 @@ public class ZombieParade : MonoBehaviour
             Spawn();
         }
 
-        if (cnt <= clearCount && !safe)
+        if (zombieCount <= clearCount && !safe)
             StartCoroutine(Cor_ShowSafeText5Sec());
 
     }
@@ -57,7 +59,7 @@ public class ZombieParade : MonoBehaviour
 
         zombie.onDeath += () => Destroy(zombie.gameObject, destroyCount);
 
-        zombie.onDeath += () => cnt--;
+        zombie.onDeath += () => zombieCount--;
 
     }
 
@@ -79,9 +81,9 @@ public class ZombieParade : MonoBehaviour
 
     IEnumerator Cor_ShowSafeText5Sec()
     {
-        UIManager.instance.SafeHouse(true);
+        UIManager.instance.ActiveSafeHouse(true);
         yield return new WaitForSeconds(wateForSecond);
-        UIManager.instance.SafeHouse(false);
+        UIManager.instance.ActiveSafeHouse(false);
         safe = true;
     }
 

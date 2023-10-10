@@ -22,6 +22,7 @@ public class AchievementsManager : MonoBehaviour
             }
             return _achievementText;
         }
+        private set { }
     }
     public enum Achievements
     {

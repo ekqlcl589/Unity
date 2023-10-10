@@ -39,7 +39,6 @@ public class Gun : MonoBehaviour
     public int AmmoRemain { get { return ammoRemain; } private set { } }
 
 
-
     private int magAmmo; // 현재 탄알집에 남아 있는 탄알
 
     public int MagAmmo { get { return magAmmo; } private set { } }

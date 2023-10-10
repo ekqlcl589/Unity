@@ -21,18 +21,18 @@ public class UIManager : MonoBehaviour
 
     private static UIManager m_instance; // 싱글톤이 할당될 변수
 
-    [SerializeField] private Text ammoText; // 탄약 표시용 텍스트
-    [SerializeField] private GameObject gameoverUI; // 게임 오버시 활성화할 UI 
-    [SerializeField] private Text aliveDayText; // 며칠간 살아서 행동했는지 알리는 텍스트
-    [SerializeField] private Text dieReasonText; // 죽은 이유, 잡은 좀비의 수 표시용 텍스트
-    [SerializeField] private Animator player;
-    [SerializeField] private GameObject lastDatUI;
-    [SerializeField] private GameObject safeHouseUI;
-    [SerializeField] private GameObject bossAlramUI;
-    [SerializeField] private Text dayText;
-    [SerializeField] private Text killText;
+    public Text ammoText; // 탄약 표시용 텍스트
+    public GameObject gameoverUI; // 게임 오버시 활성화할 UI 
+    public Text aliveDayText; // 며칠간 살아서 행동했는지 알리는 텍스트
+    public Text dieReasonText; // 죽은 이유, 잡은 좀비의 수 표시용 텍스트
+    public GameObject lastDatUI;
+    public GameObject safeHouseUI;
+    public GameObject bossAlramUI;
+    public Text dayText;
+    public Text killText;
 
     public Text GetKillText() { return killText; }
+
 
     // 탄약 텍스트 갱신
     public void UpdateAmmoText(int magAmmo, int remainAmmo)
@@ -69,17 +69,17 @@ public class UIManager : MonoBehaviour
         killText.text = "좀비" + newKill + "마리 사냥";
     }
 
-    public void ZombieParade(bool active)
+    public void ActivZombieParade(bool active)
     {
         lastDatUI.SetActive(active);
     }
 
-    public void SafeHouse(bool active)
+    public void ActiveSafeHouse(bool active)
     {
         safeHouseUI.SetActive(active);
     }
 
-    public void BossUI(bool active)
+    public void ActivBossUI(bool active)
     {
         bossAlramUI.SetActive(active);
     }

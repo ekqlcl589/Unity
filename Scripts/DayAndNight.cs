@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class DayAndNight : MonoBehaviour
 {
-    [SerializeField] private float secondPerRealTimeSecond; // 게임 세계에서의 50초 = 현실 세계의 1초 
+    public float secondPerRealTimeSecond; // 게임 세계에서의 50초 = 현실 세계의 1초 
 
     private bool isNight = false;
 
-    [SerializeField] private float nightFogDensity; // 밤 상태의 안개 밀도
+    public float nightFogDensity; // 밤 상태의 안개 밀도
     private float dayFogDensity;
-    [SerializeField] private float fogDensityCalc; // 증감량 비율
+    public float fogDensityCalc; // 증감량 비율
     private float currentFogDensity;
 
     private const int maxEulerAngleX = 170;

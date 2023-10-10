@@ -6,12 +6,12 @@ using UnityEngine.EventSystems;
 
 public class AchievementUI : MonoBehaviour
 {
-    Achievement achievement;
+    private Achievement achievement;
 
     private bool active = false;
-    [SerializeField] private GameObject AchievementPanel;
+    public GameObject AchievementPanel;
 
-    [SerializeField] private AchievementSlot[] slots;
+    private AchievementSlot[] slots;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -28,12 +28,7 @@ public class AchievementUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            active = !active;
-            AchievementPanel.SetActive(active);
-        }
-
+        ActivePanel();
     }
 
     private void SlotChange(int value)
@@ -60,5 +55,15 @@ public class AchievementUI : MonoBehaviour
             slots[i].Ach = achievement.achievements[i];
             slots[i].UpdateSlotUI();
         }
+    }
+
+    private void ActivePanel()
+    {
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            active = !active;
+            AchievementPanel.SetActive(active);
+        }
+
     }
 }

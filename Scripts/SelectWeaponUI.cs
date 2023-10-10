@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class SelectWeaponUI : MonoBehaviour
 {
-    [SerializeField] private Image _weaponUI;
+    public Image _weaponUI;
 
     public Image weaponUI
     {
@@ -18,6 +18,8 @@ public class SelectWeaponUI : MonoBehaviour
             }
             return _weaponUI;
         }
+
+        private set { }
     }
 
     private static SelectWeaponUI _instance;
@@ -34,5 +36,7 @@ public class SelectWeaponUI : MonoBehaviour
             }
             return _instance;
         }
+
+        private set { }
     }
 }

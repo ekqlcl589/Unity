@@ -5,13 +5,13 @@ using UnityEngine.UI; // UI 관련 코드
 // 플레이어 캐릭터의 생명체로서의 동작을 담당
 public class PlayerHealth : LivingEntity
 {
-    [SerializeField] private Slider healthSlider; // 체력을 표시할 UI 슬라이더
-    [SerializeField] private Slider hungerSlider;
-    [SerializeField] private Slider temperatureSlider;
+    public Slider healthSlider; // 체력을 표시할 UI 슬라이더
+    public Slider hungerSlider;
+    public Slider temperatureSlider;
 
-    [SerializeField] private AudioClip deathClip; // 사망 소리
-    [SerializeField] private AudioClip hitClip; // 피격 소리
-    [SerializeField] private AudioClip itemPickupClip; // 아이템 습득 소리
+    public AudioClip deathClip; // 사망 소리
+    public AudioClip hitClip; // 피격 소리
+    public AudioClip itemPickupClip; // 아이템 습득 소리
 
     private AudioSource playerAudioPlayer; // 플레이어 소리 재생기
     private Animator playerAnimator; // 플레이어의 애니메이터

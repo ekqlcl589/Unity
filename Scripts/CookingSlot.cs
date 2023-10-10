@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class CookingSlot : MonoBehaviour, IPointerUpHandler
 {
 
-    [SerializeField] private int slotNum;
+    public int slotNum;
 
-    [SerializeField] private Slider slider;
+    public Slider slider;
 
-    [SerializeField] private float maxdata = 100f;
-    [SerializeField] private float startingdata = 0f; // 시작 요리 게이지
+    private const float maxdata = 100f;
+    private const float startingdata = 0f; // 시작 요리 게이지
 
     private const float delayTime = 0.05f;
     public float cook { get; protected set; } // 현재 요리 게이지

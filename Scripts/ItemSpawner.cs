@@ -5,16 +5,16 @@ using UnityEngine.AI;
 
 public class ItemSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject[] items;
-    [SerializeField] private Transform playerTransform;
+    public GameObject[] items;
+    public Transform playerTransform;
 
     private List<Item> itemList = new List<Item>();
 
-    private float maxDistance = 50f;
+    private const float maxDistance = 50f;
 
-    private float timeBetSpawnMax = 7f; // 최대 시간 간격
-    private float timeBetSpawnMin = 2f; // 최소 시간 간격
-    private float timeBetSpawn; // 생성 간격
+    private const float timeBetSpawnMax = 7f; // 최대 시간 간격
+    private const float timeBetSpawnMin = 2f; // 최소 시간 간격
+    private const float timeBetSpawn; // 생성 간격
 
     private float lastSpawnTime; // 마지막 생성 시점
 
